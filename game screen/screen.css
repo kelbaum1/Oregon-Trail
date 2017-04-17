@@ -1,0 +1,166 @@
+#container
+{
+	float: left;
+	width: 100%;
+	height: 100%;
+}
+
+button
+{
+	outline: none;
+}
+
+#left1
+{
+	/*background: LightCoral;*/
+	width: 15%;
+	float: left;
+	height: 100%;
+}
+
+#mapBtn
+{
+	border-radius: 100%;
+	padding: 30px;
+	border-style: solid;
+	border-width: 5px;
+	border-color: brown;
+	background: white;
+	margin: 20px;
+}
+
+#mapBtn:hover {background-color: #3e8e41}
+
+#mapBtn:active {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+#guideBtn
+{
+	border-radius: 5%;
+	padding: 20px;
+	border: 5px solid brown;
+	background: white;
+	margin: 20px;
+}
+
+#guideBtn:hover {background-color: #3e8e41}
+
+#guideBtn:active {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+#statusBtn
+{
+	background: white;
+	border-bottom: 5px solid brown;
+	background: white;
+	margin: 20px;
+	padding: 20px;
+	border-top: transparent;
+	border-right: transparent;
+	border-left: transparent;
+}
+
+#statusBtn:hover {background-color: #3e8e41}
+
+#statusBtn:active {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+#rationsBtn
+{
+	padding: 20px;
+	margin: 20px;
+	background: brown;
+	color: white;
+	border: transparent;
+}
+#rationsBtn:hover
+{
+	background-color: white;
+	border: 2px solid brown;
+	transition-duration: 0.2s;
+	color: brown;
+}
+
+#rationsBtn:hover {background-color: #3e8e41}
+
+#rationsBtn:active {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+#buyBtn
+{
+	background: white;
+	color: brown;
+	border: 2px solid brown;
+	margin: 20px;
+	padding: 20px;
+}
+#buyBtn:hover
+{
+	background: brown;
+	color: white;
+	transition-duration: 0.2s;
+	transform: scale(1.5);
+}
+#buyBtn:hover {background-color: #3e8e41}
+
+#buyBtn:active {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+#left2
+{
+	background-color: pink;
+	width: 50%;
+	float: left;
+	height: 100%;
+}
+
+#graphics
+{
+	width: 100%;
+	background: white;
+	height: 25%;
+}
+
+#map
+{
+	width: 100%;
+	background: DeepPink;
+	height: 35%;
+}
+
+#text
+{
+	width: 100%;
+	background: Lavender;
+	height: 40%;
+}
+
+#left3
+{
+	background-color: yellow;
+	width: 20%;
+	float: left;
+	height: 100%;
+}
+
+#left4
+{
+	background-color: orange;
+	width: 15%;
+	float: left;
+	height: 100%;
+}

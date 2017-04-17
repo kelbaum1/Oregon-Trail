@@ -1,0 +1,57 @@
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="screen.css">
+
+	</head>
+	
+	<body>
+		<div id="container">
+			<div id="left1">
+				<button type="button" onclick="alert('You clicked the map button')" id="mapBtn">Map</button> <br>
+				<button type="button" onclick="alert('You clicked the guide button')" id="guideBtn">Guide</button> <br>
+				<button type="button" onclick="alert('You clicked the status button')" id="statusBtn">Status</button> <br>
+				<button type="button" onclick="alert('You clicked the rations button')" id="rationsBtn">Rations</button> <br>
+				<button type="button" onclick="alert('You clicked the buy button')" id="buyBtn">Buy</button> <br>
+			</div>
+			
+			<!--Will hold three canvas divs vertically inside-->
+			<div id="left2">
+				<div id="graphics">
+					<canvas id="graphicsCanvas" width="665" height="155"
+					style="border:1px solid #000000;">
+					
+				</div>
+				
+				<div id="map">
+					<div style="width:1px; height:1px; visibility:hidden; overflow:hidden">
+						<img id="newmap" width="310" height="250"
+						src="pics/oregontrail-3.jpg" alt="newmap">
+					</div>
+
+					<canvas id="mapCanvas" width="665" height="215"
+					style="border:1px solid #000000;">
+					
+		
+				</div>
+				
+				<div id="text">
+					<p>Moving text will go here</p>
+				</div>
+			</div>
+			
+			<div id="left3">
+				<p>Conditions will go here</p>
+			</div>
+			
+			<div id="left4">
+				<p>Trade Button</p>
+				<p>Talk Button</p>
+				<p>Rest Button</p>
+				<p>Pace Button</p>
+				<p>Hunt Button</p>
+			</div>
+		</div> <!--For #container-->
+		<script type="text/javascript" src= "screen.js">
+		</script>
+	</body>
+</html> 
