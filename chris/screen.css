@@ -1,0 +1,169 @@
+#container
+{
+	float: left;
+	width: 100%;
+	height: 100%;
+}
+
+button
+{
+	outline: none;
+	width: 100px;
+	text-align: center;
+	border-radius: 100%;
+	padding: 30px;
+	border-style: solid;
+	border-width: 5px;
+	border-color: brown;
+	background: white;
+	margin: 20px;
+	display: inline-block;
+}
+
+#left1
+{
+	background: #F3E5AB;
+	width: 14%;
+	float: left;
+	height: 100%;
+	border: 3px solid brown;
+	text-align: center;
+}
+
+
+#mapBtn:hover {background-color: #F8F8FF}
+
+#mapBtn:active {
+  background-color: #F8F8FF;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+#guideBtn:hover {background-color: #F8F8FF}
+
+#guideBtn:active {
+  background-color: #F8F8FF;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+#statusBtn:hover {background-color: #F8F8FF}
+
+#statusBtn:active {
+  background-color: #F8F8FF;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+#rationsBtn:hover
+{
+	background-color: white;
+	border: 2px solid brown;
+	transition-duration: 0.2s;
+	color: brown;
+}
+
+#rationsBtn:hover {background-color: #F8F8FF}
+
+#rationsBtn:active {
+  background-color: #F8F8FF;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+#buyBtn:hover {background-color: #F8F8FF}
+
+#buyBtn:active {
+  background-color: #F8F8FF;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+#left2
+{
+	background-color: #FFF8DC;
+	width: 50%;
+	float: left;
+	height: 100%;
+}
+
+#graphics
+{
+	width: 100%;
+	background: white;
+	height: 25%;
+}
+
+
+#mapCanvas
+{
+	background:url(pics/oregontrail-3.jpg);
+	background-size: 100% 100%;
+	background-color: yellow;
+}
+
+#text
+{
+	width: 100%;
+	background: Lavender;
+	height: 40%;
+	background-color: #FFF8DC;
+}
+
+#left3
+{
+	background-color: #FFF8DC;
+	width: 14%;
+	float: left;
+	height: 100%;
+	border: 3px solid brown;
+}
+
+#left4
+{
+	background-color: #F3E5AB;
+	width: 15%;
+	float: left;
+	height: 100%;
+	border: 3px solid brown;
+	text-align: center;
+}
+
+#tradeBtn:hover {background-color: #F8F8FF}
+
+#tradeBtn:active {
+  background-color: #F8F8FF;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+#talkBtn:hover {background-color: #F8F8FF}
+
+#talkBtn:active {
+  background-color: #F8F8FF;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+#restBtn:hover {background-color: #F8F8FF}
+
+#restBtn:active {
+  background-color: #F8F8FF;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+#paceBtn:hover {background-color: #F8F8FF}
+
+#paceBtn:active {
+  background-color: #F8F8FF;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+#fishBtn:hover {background-color: #F8F8FF}
+
+#fishBtn:active {
+  background-color: #F8F8FF;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
