@@ -277,6 +277,7 @@ function goToStore() {
 	
 	$(".store").hide();
 	$(".mainGameScreen").show();
+	myGameArea.start();
 	return supplies;
 }
 
@@ -403,8 +404,12 @@ function travelOneDay(resting = false) {
 		else if(wagon.pace <= 7) wagon.health -= 3; // strenuous
 		else wagon.health -= 5;						// grueling
 
-		var pace = wagon.pace * wagon.oxen;
+		//var pace = wagon.pace * wagon.oxen;
+		var pace = 5;
+		var pixelPace = pace * (560 / landmarks[wagon.landmarkIndex].mileMarker);
 
+		setTimeout(100);
+		updateGameArea(myGameArea,landmarkIcon,wagonIcon,pixelPace);
 		// check for tombstones
 		while(!(tombstones === undefined || tombstones.length == 0) && wagon.milesTraveled + pace >= tombstones[0][4]) {
 			bootbox.alert("at mile: " + tombstones[0][4] + ":" + tombstones[0][2] + " " + tombstones[0][3] + " " + tombstones[0][5]);
@@ -460,6 +465,7 @@ function travelOneDay(resting = false) {
 	if(wagon.atLandmark) {
 		stop();
 		// display new graphic
+		landmarkIcon.x = 15;
 		wagon.landmarkIndex++;
 		$("#log").html("arrived at: " + landmarks[wagon.landmarkIndex].name);
 		
@@ -654,6 +660,72 @@ function getRandomInt(min, max) {
 	return min + Math.floor(Math.random() * (max - min + 1));
 }
 
+class gameArea {
+	
+	constructor (){
+		this.canvas = document.getElementById("graphicsCanvas");
+
+	}
+	start(){
+	//clearrect on this.context
+;
+		this.context = this.canvas.getContext("2d");
+	}
+	clear(){
+		this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+	}
+}
+
+function updateGameArea(myGameArea,landmarkIcon,wagonIcon,pace) {
+	myGameArea.clear();
+	landmarkIcon.update(pace);    
+	landmarkIcon.draw();
+	setTimeout(100);
+	wagonIcon.draw();
+}
+
+function component(width, height, name, x, y, myGameArea) {
+	this.width = width;
+	this.height = height;
+	this.speedX = 1;
+	this.speedY = 0;
+	this.x = x;
+	this.y = y;    
+	this.name = name;
+	this.draw = function() {
+		ctx = myGameArea.context;
+		
+	if(this.name == "wagon")
+	{
+		var wagon = new Image();
+		wagon.src = "pics/shittywagon.jpg";
+		ctx.drawImage(wagon,this.x,this.y,this.width, this.height);
+	}
+	else{
+		ctx.fillStyle = "blue";
+		ctx.fillRect(this.x, this.y, this.width, this.height);
+	}
+}
+	
+	this.update = function(pace) {
+		this.x += pace;
+     
+	}    
+	this.stop = function()
+	{
+		this.speedX = 0;
+		this.speedY = 0;
+	}
+}
+			
+
+function loadMap() {
+var canvas = document.getElementById("mapCanvas");
+var ctx = canvas.getContext("2d");
+var img = document.getElementById("newmap");
+ctx.drawImage(img, 0,0,665,215);
+};
+
 // global types
 var illness = ['measles', 'snakebite', 'dysentery', 'typhoid', 'cholera', 'exhaustion'];
 var randomFind = ['food', 'supplies', 'water'];
@@ -702,4 +774,8 @@ var loop;
 var wagon = new Wagon(4, 'banker', ['Rachel', 'Sarah', 'Henry', 'George', 'Nancy']);
 var tombstones = getTombstones();
 
+var myGameArea = new gameArea();
+var wagonIcon = new component(40, 40, "wagon", 575, 77.75,myGameArea);
+var landmarkIcon = new component(20,60,"landmark",15,50,myGameArea);
+loadMap();
 });
