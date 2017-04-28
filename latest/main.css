@@ -1,0 +1,343 @@
+#container
+{
+	float: left;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+
+#left1
+{
+	background: #F3E5AB;
+	width: 14%;
+	float: left;
+	height: 100%;
+	border: 3px solid brown;
+}
+
+#btnMap
+{
+	border-radius: 100%;
+	padding: 30px;
+	border-style: solid;
+	border-width: 5px;
+	border-color: brown;
+	background: white;
+	/*margin: 20px;*/
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 20px;
+}
+
+#btnMap:hover {background-color: #F8F8FF}
+
+#btnMap:active {
+  background-color: #F8F8FF;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+#btnGuide
+{
+	border-radius: 100%;
+	padding: 30px;
+	border-style: solid;
+	border-width: 5px;
+	border-color: brown;
+	background: white;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 20px;
+}
+
+#btnGuide:hover {background-color: #F8F8FF}
+
+#btnGuide:active {
+  background-color: #F8F8FF;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+#btnStatus
+{
+	border-radius: 100%;
+	padding: 30px;
+	border-style: solid;
+	border-width: 5px;
+	border-color: brown;
+	background: white;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 20px;
+}
+#btnStatus:hover {background-color: #F8F8FF}
+#btnStatus:active {
+  background-color: #F8F8FF;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+#btnRations
+{
+	border-radius: 100%;
+	padding: 30px;
+	border-style: solid;
+	border-width: 5px;
+	border-color: brown;
+	background: white;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 20px;
+}
+/*#btnRations:hover
+{
+	background-color: white;
+	border: 2px solid brown;
+	transition-duration: 0.2s;
+	color: brown;
+}*/
+
+#btnRations:hover {background-color: #F8F8FF}
+#btnRations:active {
+  background-color: #F8F8FF;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+#btnBuy
+{
+	border-radius: 100%;
+	padding: 30px;
+	border-style: solid;
+	border-width: 5px;
+	border-color: brown;
+	background: white;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 20px;
+}
+
+#btnBuy:hover {background-color: #F8F8FF}
+
+#btnBuy:active {
+  background-color: #F8F8FF;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+#left2
+{
+	background-color: #FFF8DC;
+	width: 50%;
+	float: left;
+	height: 100%;
+}
+
+#graphics
+{
+	width: 100%;
+	background: white;
+	height: 25%;
+}
+
+/*#map
+{
+	width: 100%;
+	background: DeepPink;
+	height: 35%;
+}*/
+
+/*#mapImg.resize:
+{
+	width: 100%;
+	height: 35%;
+}*/
+
+#text
+{
+	width: 40%;
+	background: Lavender;
+	height: 100%;
+	background-color: #FFF8DC;
+}
+
+#left3
+{
+	/*background-color: #FFF8DC;
+	width: 14%;
+	float: left;
+	height: 100%;
+	border: 3px solid brown;*/
+	
+	background-color: #FFF8DC;
+	width: 20%;
+	float: left;
+	height: 75%;
+	border: 3px solid brown;
+}
+
+#left3-2
+{
+	background-color: #FFF8DC;
+	width: 100%;
+	float: left;
+	height: 25%;
+	border-top: 3px solid brown;
+}
+
+#timeOut
+{
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 22px;
+	margin-bottom: 0px;
+	height: 35px;
+	width: 70%;
+	border-style: solid;
+	border-width: 5px;
+	border-color: brown;
+	background: white;
+}
+
+#continue
+{
+	height: 35px;
+	width: 70%;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 0px;
+	margin-bottom: 15px;
+	border-style: solid;
+	border-width: 5px;
+	border-color: brown;
+	background: white;
+}
+
+#left4
+{
+	background-color: #F3E5AB;
+	width: 15%;
+	float: left;
+	height: 100%;
+	border: 3px solid brown;
+}
+
+#btnTrade
+{
+	border-radius: 100%;
+	padding: 30px;
+	border-style: solid;
+	border-width: 5px;
+	border-color: brown;
+	background: white;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 20px;
+}
+
+#btnTrade:hover {background-color: #F8F8FF}
+
+#btnTrade:active {
+  background-color: #F8F8FF;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+#btnTalk
+{
+	border-radius: 100%;
+	padding: 30px;
+	border-style: solid;
+	border-width: 5px;
+	border-color: brown;
+	background: white;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 20px;
+}
+
+#btnTalk:hover {background-color: #F8F8FF}
+
+#btnTalk:active {
+  background-color: #F8F8FF;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+#btnRest
+{
+	border-radius: 100%;
+	padding: 30px;
+	border-style: solid;
+	border-width: 5px;
+	border-color: brown;
+	background: white;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 20px;
+}
+
+#btnRest:hover {background-color: #F8F8FF}
+
+#btnRest:active {
+  background-color: #F8F8FF;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+#btnPace
+{
+	border-radius: 100%;
+	padding: 30px;
+	border-style: solid;
+	border-width: 5px;
+	border-color: brown;
+	background: white;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 20px;
+}
+
+#btnPace:hover {background-color: #F8F8FF}
+
+#btnPace:active {
+  background-color: #F8F8FF;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+#btnFish
+{
+	border-radius: 100%;
+	padding: 30px;
+	border-style: solid;
+	border-width: 5px;
+	border-color: brown;
+	background: white;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 20px;
+}
+
+#btnFish:hover {background-color: #F8F8FF}
+
+#btnFish:active {
+  background-color: #F8F8FF;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+main.css
+Open with
+Displaying main.css.
