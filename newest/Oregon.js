@@ -21,9 +21,8 @@ $(document).ready(function(){
 	$("#btnSetup").click(function() {
 		setupGame();
 		$(".setupPage").hide();
+		updateStorePrices();
 		$(".storePage").show();
-
-		$("#budget").html("Money left to spend: $" + wagon.money);
 	});
 	
 	$("#btnStore").click(function() {
@@ -45,8 +44,13 @@ $(document).ready(function(){
 
 			//$("#btnBuy").prop("disabled",false);
 			//$("#btnTalk").prop("disabled",false);
-			//$("#btnPause").prop("disabled",true);
+			$("#btnPause").prop("disabled",true);
 		}
+	});
+
+	$("#btnCancel").click(function() {
+		$(".storePage").hide();
+		$(".mainPage").show();
 	});
 	
 	$("#btnInsertTombstone").click(function() {
@@ -64,6 +68,7 @@ $(document).ready(function(){
 
 	$("#btnBuy").click(function(){
 		$(".mainPage").hide();
+		updateStorePrices();
 		$(".storePage").show();
 	});
 
@@ -105,6 +110,40 @@ $(document).ready(function(){
 	$("#btnTombstones").click(function () {
 		getTombstones();
 	});
+
+function updateStorePrices() {
+
+	document.getElementById("buyOxen").value = 0;
+	document.getElementById("buyFood").value = 0;
+	document.getElementById("buyClothes").value = 0;
+	document.getElementById("buyBait").value = 0;
+	document.getElementById("buyWheels").value = 0;
+	document.getElementById("buyAxles").value = 0;
+	document.getElementById("buyTongues").value = 0;
+
+	$("#budget").html("Money left to spend: $" + wagon.money);
+
+	$("#priceOxen").html("Oxen: $" + basePrices.oxen + " each");
+	$("#numOxen").html("You currently have " + wagon.oxen);
+
+	$("#priceFood").html("Food: $" + basePrices.food + " per pound");
+	$("#numFood").html("You currently have " + wagon.food + " pounds");
+
+	$("#priceClothing").html("Sets of clothing: $" + basePrices.clothing + " each");
+	$("#numClothing").html("You currently have " + wagon.clothing);
+
+	$("#priceBait").html("Bait: $" + basePrices.bait + " each");
+	$("#numBait").html("You currently have " + wagon.bait);
+
+	$("#priceWheel").html("Wheels: $" + basePrices.wheel + " each");
+	$("#numWheel").html("You currently have " + wagon.wheels);
+
+	$("#priceAxle").html("Axles: $" + basePrices.axle + " each");
+	$("#numAxle").html("You currently have " + wagon.axles);
+
+	$("#priceTongue").html("Tongues: $" + basePrices.tongue + " each");
+	$("#numTongue").html("You currently have " + wagon.tongues);
+}
 
 function displaySupplies() {
 	$("#food").html("food: " + wagon.food + " pounds");
@@ -163,7 +202,6 @@ function takeRest() {
 		title: "How many days do you want to rest? The maximum is " + maxRest + " days.",
 		inputType: 'number',
 		callback: function (result) {
-			console.log(result);
 			for(var i = 0; i < result && i < maxRest; i++) {
 				travelOneDay(true);
 			}
@@ -219,7 +257,6 @@ function makeTrade() {
 				}
 			},
 			callback: function (result) {
-				console.log('This was logged in the callback: ' + result);
 				if(result) {
 					// make the trade, update the wagon supplies and money
 					var buyCommand = "wagon." + buy + " += " + buyQuantity;
@@ -258,7 +295,6 @@ function updatePace() {
 			}
 		],
 		callback: function (result) {
-			console.log(result);
 			if(result) wagon.pace = result;
 		}
 	});
@@ -287,7 +323,6 @@ function updateRations() {
 			}
 		],
 		callback: function (result) {
-			console.log(result);
 			if(result) wagon.rations = result;
 		}
 	});
@@ -307,16 +342,14 @@ function updateSupplies() {
 	var tongues = document.getElementById("buyTongues").value;
 	
 	var supplies = [oxen, food, clothes, bait, wheels, axles, tongues];
-	var basePrices = [20, 0.20, 10, 15, 10, 10, 10];
-
-
+	var prices = Object.values(basePrices);
 
 	for(var i = 0; i < supplies.length; i++) {
 		if(isNaN(parseInt(supplies[i]))) {
 			return false;
 		}
 		else {
-			cost += parseInt(supplies[i]) * basePrices[i] * multiplier;
+			cost += parseInt(supplies[i]) * prices[i] * multiplier;
 			if(cost > budget) {
 				bootbox.alert("You don't have enough money to buy all these supplies.");
 				return false;
@@ -331,6 +364,7 @@ function updateSupplies() {
 	wagon.wheels += parseInt(wheels);
 	wagon.axles += parseInt(axles);
 	wagon.tongues += parseInt(tongues);
+	//console.log("cost: " + cost);
 	wagon.money -= cost;
 
 	return supplies;
@@ -345,9 +379,9 @@ function stop() {
 
 function startTravel() {
 	$("#btnPause").prop("disabled",false);
-	//$("#btnBuy").prop("disabled",true);
-	//$("#btnTalk").prop("disabled",true);
-	//$("#btnFish").prop("disabled",false);
+	$("#btnBuy").prop("disabled",true);
+	$("#btnTalk").prop("disabled",true);
+	$("#btnFish").prop("disabled",false);
 	$("#wagonStatus").html("Wagon is moving");
 	loop = setInterval(travelOneDay, 1000);
 }
@@ -374,7 +408,6 @@ function insertTombstone() {
 		title: "Sadly, your entire party died on the trip to Oregon. Write a message for your tombstone:",
 		inputType: 'textarea',
 		callback: function (result) {
-			console.log(result);
 			xmlhttp = new XMLHttpRequest();
 			var dateFormatted = [wagon.date.getFullYear(), wagon.date.getMonth() + 1, wagon.date.getDate()].join('-');
 			xmlhttp.open("GET", "https://swe.umbc.edu/~kelbaum1/Oregon/connect.php?arg=" + "insertTombstone" + "&dod=" + dateFormatted + "&name=" + wagon.people[0].name + "&mile=" + wagon.milesTraveled + "&msg=" + result, true);
@@ -436,11 +469,11 @@ function travelOneDay(resting = false) {
 	wagon.food -= rations * wagon.people.length;
 	if(wagon.food < 0) {
 		wagon.food = 0;
-		wagon.health -= 15*wagon.people.length;
+		wagon.health -= 10*wagon.people.length;
 	}
-	if(wagon.rations == 'filling') wagon.health += 3;
+	if(wagon.rations == 'filling') wagon.health += 3*wagon.people.length;
 	else if(wagon.rations == 'meager') ;
-	else if(wagon.rations == 'bare bones') wagon.health -=5;
+	else if(wagon.rations == 'bare bones') wagon.health -=5*wagon.people.length;
 	else {}
 	$("#food").html("food remaining: " + wagon.food + " pounds");
 	
@@ -530,7 +563,7 @@ function travelOneDay(resting = false) {
 		}
 		else if(wagon.people[i].health == 'sick') {
 			var random = getRandomInt(0, 1000*wagon.multiplier)
-			if(random < 200) {
+			if(random < 150) {
 				wagon.people[i].health = 'dead';
 				if(i == 0) {
 					// the game is over
@@ -569,9 +602,9 @@ function travelOneDay(resting = false) {
 		$("#log").html("arrived at: " + landmarks[wagon.landmarkIndex].name);
 		
 		if(landmarks[wagon.landmarkIndex].fort) {
-			//$("#btnBuy").prop("disabled",false);
-			//$("#btnTalk").prop("disabled",false);
-			//$("#btnFish").prop("disabled",true);
+			$("#btnBuy").prop("disabled",false);
+			$("#btnTalk").prop("disabled",false);
+			$("#btnFish").prop("disabled",true);
 		}
 		if(landmarks[wagon.landmarkIndex].river) {
 			wagon.finishedCrossing = false;
@@ -633,7 +666,7 @@ function crossRiver() {
 
 	function loseRandomSupplies() {
 		var oxen = getRandomInt(-5, Math.min(2, wagon.oxen));
-		if(oxen > 0) wagon.oxen -= oxen;
+		if(oxen > 0 && wagon.oxen > 2) wagon.oxen -= oxen;
 		var food = getRandomInt(-5, Math.min(100, wagon.food));
 		if(food > 0) wagon.food -= food;
 		var clothing = getRandomInt(-5, Math.min(2, wagon.clothing));
@@ -741,7 +774,6 @@ function chooseFork(i1, i2) {
 			}
 		],
 		callback: function (result) {
-			console.log(result);
 			if(result == i1) {
 				landmarks.splice(i2, 1);
 				wagon.passedFork = true;
@@ -816,6 +848,7 @@ var monthName = ['January', 'February', 'March', 'April', 'May', 'June', 'July',
 var speech = ['hi', 'see you later', 'good luck'];
 var health = ['good', 'fair', 'poor', 'very poor', 'dead'];
 var weather = ['cloudy', 'sunny', 'fair', 'rainy', 'snowy'];
+var basePrices = {oxen:20, food:0.20, clothing:10, bait:15, wheel:10, axle:10, tongue:10};
 
 var landmarks = [
 	new Landmark('Independence, Missouri', 598, 158, 102, true),
@@ -838,30 +871,6 @@ var landmarks = [
 	//new Landmark('Columbia River', 50, false, true),
 	new Landmark('Oregon City, Oregon', 112, 60, 0)
 ];
-
-/*
-var landmarks = [
-	new Landmark('Independence, Missouri', 102, true),
-	new Landmark('Kansas River Crossing', 82, false, true),
-	new Landmark('Big Blue River Crossing', 118, false, true),
-	new Landmark('Fort Kearney', 250, true),
-	new Landmark('Chimney Rock', 86),
-	new Landmark('Fort Laramie', 190, true),
-	new Landmark('Independence Rock', 102),
-	new Landmark('South Pass', 57, false, false, true),
-		new Landmark('Green River Crossing', 143, false, true),
-		new Landmark('Fort Bridger', 150, true),
-	new Landmark('Soda Springs', 57),
-	new Landmark('Fort Hall', 164, true),
-	new Landmark('Snake River Crossing', 113, false, true),
-	new Landmark('Fort Boise', 160, true),
-	new Landmark('Blue Mountains', 180, false, false, true),
-		new Landmark('The Dalles', 100),
-		new Landmark('Fort Walla Walla', 150, true),
-	new Landmark('Columbia River', 50, false, true),
-	new Landmark('Oregon City, Oregon', 0)
-];
-*/
 
 // returns a random integer between min and max, inclusive
 // source: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
