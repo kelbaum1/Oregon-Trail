@@ -8,7 +8,8 @@ $(document).ready(function(){
 	$(".storePage").hide();
 	$(".mainPage").hide();
 	$(".titlePage").show();
-
+	$(".endGame").hide();
+	
 	$("button").click(function(){
 		stop();
 	});
@@ -518,6 +519,18 @@ function travelOneDay(resting = false) {
 		}
 		else {}
 		pace *= wagon.oxen;
+		
+		var pixelPace = pace * (560 / landmarks[wagon.landmarkIndex].mileMarker);
+		var flag = true;
+		
+		while(wagon.milesToday < pixelPace)
+		{
+			setTimeout( function() { updateGameArea(myGameArea,landmarkIcon,wagonIcon,pixelPace);},500);
+			
+			wagon.milesToday++;
+			
+		}
+		wagon.milesToday = 0;
 
 		// check for tombstones
 		while(!(tombstones === undefined || tombstones.length == 0) && wagon.milesTraveled + pace >= tombstones[0][4]) {
@@ -599,6 +612,7 @@ function travelOneDay(resting = false) {
 		stop();
 		// display new graphic
 		wagon.landmarkIndex++;
+		landmarkIcon.x = 15;
 		$("#log").text("arrived at: " + landmarks[wagon.landmarkIndex].name);
 		$("#nextLandmark").text("next stop: " + landmarks[wagon.landmarkIndex + 1].name);
 		
@@ -756,7 +770,26 @@ function crossRiver() {
 }
 
 function playRiverCrossingGame() {
-	bootbox.alert("Congrats, you crossed the final river! That was easy.");
+
+	$(".setupPage").hide();
+	$(".storePage").hide();
+	$(".mainPage").hide();
+	$(".titlePage").hide();
+	$(".endGame").show();
+	confirm("You have reached the Dulles River Crossing.  You will have to float your wagon and navigate using the arrow keys to avoid rocks!  Be careful, each rock you hit will cause you to lose supplies!");
+	var endGameArea = new gameArea("endCanvas");
+	endGameArea.start();
+
+	var newWagon = new component(20,20,"brown",800,200,endGameArea);
+	var rock = new component(20,20,"grey",200,200,endGameArea);
+	newWagon.speedX = 0;
+	
+	endGameArea.interval = setInterval(function() {updateRiverCrossing(endGameArea,newWagon),1000}); 
+	
+
+	//bootbox.alert("Congrats, you crossed the final river! That was easy.");
+	//$(".mainPage").show();
+	//$(".endGame").hide();
 	return true;
 }
 
@@ -846,6 +879,177 @@ function Person(name, health = 'healthy') {
 	this.health = health;
 }
 
+class gameArea {
+	
+	constructor (canvasName){
+		this.canvas = document.getElementById(canvasName);
+
+	}
+	start(){
+	//clearrect on this.context
+		this.context = this.canvas.getContext("2d");
+	}
+	clear(){
+		this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+	}
+	
+	stop(){
+		clearInterval(this.interval);
+	}
+}
+
+function updateGameArea(myGameArea,landmarkIcon,wagonIcon,pace) {
+	myGameArea.clear();
+	landmarkIcon.update(1);    
+	landmarkIcon.draw();
+	//setTimeout(100);
+	wagonIcon.draw();
+}
+
+function updateRiverCrossing(gameArea,riverWagon)
+{
+
+	for (i = 0; i < rocks.length; i += 1) {
+		if (riverWagon.crashWith(rocks[i])) {
+			confirm("hit!");
+			//need code to remove items
+			riverWagon.x-=40;
+			//return;
+		} 
+    }
+	window.addEventListener('keydown',function(e){
+		if(e.keyCode == 37)
+		{
+			riverWagon.speedX = -1;
+			riverWagon.speedY = 0;
+		}
+		else if(e.keyCode == 38)
+		{
+			riverWagon.speedY = -1;
+			riverWagon.speedX = 0;
+		}
+		else if(e.keyCode == 39)
+		{
+			riverWagon.speedX = 1;
+			riverWagon.speedY = 0;
+		}
+		else if(e.keyCode == 40)
+		{
+			riverWagon.speedY = 1;
+			riverWagon.speedX = 0;
+		}
+	});
+	//console.log(riverWagon.count);
+	if(riverWagon.count%200 == 0)
+	{
+		var randomNum = Math.floor(Math.random() * 500);
+		rocks.push( new component(20,20,"grey",0,randomNum,gameArea));
+		
+	}
+	console.log(riverWagon.count);
+	riverWagon.count++;
+	gameArea.clear();
+	riverWagon.updateCrossing();
+	riverWagon.draw();
+	for (i = 0; i < rocks.length; i += 1) {
+		rocks[i].update(1);
+		rocks[i].draw();
+	}
+	if(riverWagon.count == 10000)
+	{
+		confirm("Congrats, you made it to Oregon!");
+		gameArea.stop();
+
+	}
+}
+
+function component(width, height, name, x, y, myGameArea) {
+	this.width = width;
+	this.height = height;
+	this.speedX = 1;
+	this.speedY = 0;
+	this.x = x;
+	this.y = y;    
+	this.name = name;
+	this.count = 0;
+	this.draw = function() {
+		ctx = myGameArea.context;
+		
+		if(this.name == "wagon")
+		{
+			var wagon = new Image();
+			wagon.src = "pics/shittywagon.jpg";
+			ctx.drawImage(wagon,this.x,this.y,this.width, this.height);
+		}
+		else if(this.name == "landmark")
+		{
+			var river = new Image();
+			river.src = "pics/river.jpg";
+			ctx.drawImage(river,this.x, this.y, this.width, this.height);
+		}
+		else{
+			ctx.fillStyle = this.name;
+			ctx.fillRect(this.x, this.y, this.width, this.height);
+		}
+	}
+		
+		this.update = function(pace) {
+			this.x += pace;
+		 
+		}    
+		
+		this.updateCrossing = function()
+		{
+ //checking to see if out of bounds before update
+			if(this.x == 0)
+			{
+				this.x++;
+				this.y += this.speedY; 
+			}
+			if(this.y == 0)
+			{
+				this.x += this.speedX;
+				this.y++; 
+			}
+			if(this.x == 830)
+			{
+				this.x--;
+				this.y += this.speedY; 
+			}
+			if(this.y == 480)
+			{
+				this.x += this.speedX;
+				this.y--; 
+			}
+			else{
+				this.x += this.speedX;
+				this.y += this.speedY; 
+			}
+		}
+		this.stop = function()
+		{
+			this.speedX = 0;
+			this.speedY = 0;
+		}
+
+		
+		this.crashWith = function(otherobj) {
+			var myleft = this.x;
+			var myright = this.x + (this.width);
+			var mytop = this.y;
+			var mybottom = this.y + (this.height);
+			var otherleft = otherobj.x;
+			var otherright = otherobj.x + (otherobj.width);
+			var othertop = otherobj.y;
+			var otherbottom = otherobj.y + (otherobj.height);
+			var crash = true;
+			if ((mybottom < othertop) || (mytop > otherbottom) || (myright < otherleft) || (myleft > otherright)) {
+				crash = false;
+			}
+			return crash;
+    }
+}
+
 // global types
 var illness = ['measles', 'a snakebite', 'dysentery', 'typhoid', 'cholera', 'exhaustion'];
 var randomFind = ['food', 'supplies', 'water'];
@@ -887,5 +1091,11 @@ function getRandomInt(min, max) {
 var loop;
 var wagon;
 var tombstones = getTombstones();
+
+var myGameArea = new gameArea("graphicsCanvas");
+var wagonIcon = new component(40, 40, "wagon", 575, 77.75,myGameArea);
+var landmarkIcon = new component(55,55,"landmark",15,85,myGameArea);
+var rocks = [];
+myGameArea.start();
 
 });
