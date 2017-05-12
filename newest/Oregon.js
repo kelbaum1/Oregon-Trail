@@ -446,7 +446,9 @@ function insertScore() {
 function travelOneDay(resting = false) {
 
 	// check for landmarks
+
 	if(!wagon.finishedCrossing) {
+		
 		if(crossRiver())
 			$("#log").text("finished crossing: " + landmarks[wagon.landmarkIndex].name);
 
@@ -460,6 +462,8 @@ function travelOneDay(resting = false) {
 	if(wagon.atLandmark)
 	{
 		landmarkIcon.x = 15;
+		fortIcon.x = 15;
+		riverIcon.x = 15;
 	}
 	wagon.atLandmark = false;
 
@@ -532,10 +536,25 @@ function travelOneDay(resting = false) {
 		
 		var pixelPace = pace * (560 / landmarks[wagon.landmarkIndex].mileMarker);
 		var flag = true;
-		
+		/****************************************************************/
 		while(wagon.milesToday < pixelPace)
 		{
-			setTimeout( function() { updateGameArea(myGameArea,landmarkIcon,wagonIcon,pixelPace);},500);
+			if(landmarks[wagon.landmarkIndex+1].name == 'Chimney Rock' || landmarks[wagon.landmarkIndex+1].name == 'Independence Rock' || 
+			landmarks[wagon.landmarkIndex+1].name == 'South Pass' || landmarks[wagon.landmarkIndex+1].name == 'Soda Springs' || 
+			landmarks[wagon.landmarkIndex+1].name == 'Blue Mountains')
+			{
+				setTimeout( function() { updateGameArea(myGameArea,landmarkIcon,wagonIcon,pixelPace);},500);	
+			}
+			else if(landmarks[wagon.landmarkIndex+1].name == 'Kansas River Crossing' || landmarks[wagon.landmarkIndex+1].name == 'Big Blue River Crossing' || 
+			landmarks[wagon.landmarkIndex+1].name ==  landmarks[wagon.landmarkIndex+1].name == 'Green River Crossing' || 
+			landmarks[wagon.landmarkIndex+1].name == 'Snake River Crossing' || landmarks[wagon.landmarkIndex+1].name == 'The Dalles' || 
+			landmarks[wagon.landmarkIndex+1].name =='Columbia River')
+			{
+				setTimeout( function() { updateGameArea(myGameArea,riverIcon,wagonIcon,pixelPace);},500);
+			}
+			else{
+				setTimeout( function() { updateGameArea(myGameArea,fortIcon,wagonIcon,pixelPace);},500);
+			}
 			
 			wagon.milesToday++;
 			
@@ -588,6 +607,7 @@ function travelOneDay(resting = false) {
 		}
 		else if(wagon.people[i].health == 'sick') {
 			var random = getRandomInt(0, 1000*wagon.multiplier)
+			console.log(random);
 			if(random < 150) {
 				wagon.people[i].health = 'dead';
 				if(i == 0) {
@@ -602,7 +622,7 @@ function travelOneDay(resting = false) {
 				stop();
 				//break;
 			}
-			else if(random > 950) {
+			else if(random > 5000) {
 				wagon.people[i].health = 'healthy';
 				bootbox.alert(wagon.people[i].name + " recovered from sickness.");
 				stop();
@@ -965,8 +985,10 @@ class gameArea {
 
 function updateGameArea(myGameArea,landmarkIcon,wagonIcon,pace) {
 	myGameArea.clear();
-	landmarkIcon.update(1);    
+
+	landmarkIcon.update(1);
 	landmarkIcon.draw();
+
 	//setTimeout(100);
 	wagonIcon.draw();
 }
@@ -976,8 +998,51 @@ function updateRiverCrossing(gameArea,riverWagon)
 
 	for (i = 0; i < rocks.length; i += 1) {
 		if (riverWagon.crashWith(rocks[i])) {
-			confirm("hit!");
-			//need code to remove items
+			var newStr = "You lost some supplies while crossing: \n";
+			var oxen = getRandomInt(-5, Math.min(2, wagon.oxen));
+			if(oxen > 0 && wagon.oxen > 2)
+			{
+				wagon.oxen -= oxen;
+				newStr=newStr+" "+(oxen)+" oxen\n";
+			}
+			var food = getRandomInt(-5, Math.min(100, wagon.food));
+			if(food > 0 && wagon.food > 100) 
+			{
+				wagon.food -= food;
+				newStr=newStr+" "+food+" food\n";
+			}
+			var clothing = getRandomInt(-5, Math.min(2, wagon.clothing));
+			if(clothing > 0)
+			{
+				wagon.clothing -= clothing;
+				newStr=newStr+" "+clothing+" clothing\n";
+			}
+			var bait = getRandomInt(-5, Math.min(5, wagon.bait));
+			if(bait > 0)
+			{
+				wagon.bait -= bait;
+				newStr=newStr+" "+bait+" bait\n";
+			}
+			var wheels = getRandomInt(-5, Math.min(1, wagon.wheels));
+			if(wheels > 0)
+			{
+				wagon.wheels -= wheels;
+				newStr=newStr+" "+wheels+" wheels\n";
+			}
+			var axles = getRandomInt(-5, Math.min(1, wagon.axles));
+			if(axles > 0)
+			{
+				wagon.axles -= axles
+				newStr=newStr+" "+axels+" axels\n";
+			}
+			var tongues = getRandomInt(-5, Math.min(1, wagon.tongues));
+			if(tongues > 0)
+			{
+				wagon.tongues -= tongues;
+				newStr=newStr+" "+tongues+" tongues\n";
+			}
+			confirm(newStr);
+	
 			riverWagon.x-=40;
 			//return;
 		} 
@@ -1011,7 +1076,7 @@ function updateRiverCrossing(gameArea,riverWagon)
 		rocks.push( new component(20,20,"grey",0,randomNum,gameArea));
 		
 	}
-	console.log(riverWagon.count);
+
 	riverWagon.count++;
 	gameArea.clear();
 	riverWagon.updateCrossing();
@@ -1048,10 +1113,25 @@ function component(width, height, name, x, y, myGameArea) {
 		}
 		else if(this.name == "landmark")
 		{
+			var landmark = new Image();
+			landmark.src = "pics/landmark.png";
+			ctx.drawImage(landmark,this.x, this.y, this.width, this.height);
+		}
+		
+		else if(this.name == "fort")
+		{
+			var fort = new Image();
+			fort.src = "pics/fort.png";
+			ctx.drawImage(fort,this.x, this.y, this.width, this.height);
+		}
+		
+		else if(this.name == "river")
+		{
 			var river = new Image();
 			river.src = "pics/river.jpg";
 			ctx.drawImage(river,this.x, this.y, this.width, this.height);
 		}
+		
 		else{
 			ctx.fillStyle = this.name;
 			ctx.fillRect(this.x, this.y, this.width, this.height);
@@ -1145,6 +1225,7 @@ var landmarks = [
 		new Landmark('Fort Walla Walla', 165, 60, 150, true),
 	//new Landmark('Columbia River', 50, false, true),
 	new Landmark('Oregon City, Oregon', 112, 60, 0)
+	//landmarks[wagon.landmarkIndex].name
 ];
 
 // returns a random integer between min and max, inclusive
@@ -1158,8 +1239,10 @@ var wagon;
 var tombstones = getTombstones();
 
 var myGameArea = new gameArea("graphicsCanvas");
-var wagonIcon = new component(65, 40, "wagon", 575, 77.75,myGameArea);
+var wagonIcon = new component(65, 40, "wagon", 575, 95,myGameArea);
 var landmarkIcon = new component(55,55,"landmark",15,85,myGameArea);
+var fortIcon = new component(55,55,"fort",15,85,myGameArea);
+var riverIcon = new component(55,55,"river",15,85,myGameArea);
 var rocks = [];
 myGameArea.start();
 
