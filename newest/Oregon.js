@@ -38,7 +38,10 @@ $(document).ready(function(){
 			$("#currentDate").text("date: " + monthName[wagon.date.getMonth()] + " " + wagon.date.getDate() + ", " + wagon.date.getFullYear());
 			$("#rations").text("rations: " + wagon.rations);
 			$("#pace").text("pace: " + wagon.pace);
-			$("#health").text("health: " + wagon.health);
+			/***************************************************/
+			var healthStr = setHealthStr();
+			//$("#health").text("health: " + wagon.health);
+			$("#health").text("health: " + healthStr);
 			$("#weather").text("weather: " + wagon.weather);
 			$("#log").text("arrived at: " + landmarks[wagon.landmarkIndex].name);
 			$("#distanceToLandmark").text("to next landmark: " + wagon.nextLandmark + " miles");
@@ -446,11 +449,17 @@ function travelOneDay(resting = false) {
 	if(!wagon.finishedCrossing) {
 		if(crossRiver())
 			$("#log").text("finished crossing: " + landmarks[wagon.landmarkIndex].name);
+
 		return;
 	}
 	if(!wagon.passedFork) {
 		chooseFork(wagon.landmarkIndex + 1, wagon.landmarkIndex + 2);
 		return;
+	}
+	/**********************************************************************/
+	if(wagon.atLandmark)
+	{
+		landmarkIcon.x = 15;
 	}
 	wagon.atLandmark = false;
 
@@ -507,17 +516,18 @@ function travelOneDay(resting = false) {
 		var pace;
 		if(wagon.pace == 'steady') {
 			wagon.health += 1;
-			pace = 5;
+			pace = 1;
 		}
 		else if(wagon.pace == 'strenuous') { 
 			wagon.health -= 3;
-			pace = 7;
+			pace = 2;
 		}
 		else if(wagon.pace == 'grueling') {
 			wagon.health -= 5;
-			pace = 10;
+			pace = 3;
 		}
 		else {}
+		
 		pace *= wagon.oxen;
 		
 		var pixelPace = pace * (560 / landmarks[wagon.landmarkIndex].mileMarker);
@@ -555,10 +565,12 @@ function travelOneDay(resting = false) {
 	}
 
 	if(wagon.health < 0) wagon.health = 0;
-	$("#health").text("health: " + wagon.health);
-	if(wagon.health >= 850) wagon.multiplier = 1.5;
-	else if(wagon.health >= 500) wagon.multiplier = 1.25;
-	else if(wagon.health >= 300) wagon.multiplier = 1;
+	/***********************************************/
+	var healthStr = setHealthStr();
+	$("#health").text("health: " + healthStr);
+	if(wagon.health >= 1000) wagon.multiplier = 10;
+	else if(wagon.health >= 750) wagon.multiplier = 5;
+	else if(wagon.health >= 300) wagon.multiplier = 2;
 	else if(wagon.health >= 150) wagon.multiplier = 0.75;
 	else wagon.multiplier = 0.5;
 
@@ -612,7 +624,7 @@ function travelOneDay(resting = false) {
 		stop();
 		// display new graphic
 		wagon.landmarkIndex++;
-		landmarkIcon.x = 15;
+		
 		$("#log").text("arrived at: " + landmarks[wagon.landmarkIndex].name);
 		$("#nextLandmark").text("next stop: " + landmarks[wagon.landmarkIndex + 1].name);
 		
@@ -649,6 +661,7 @@ function travelOneDay(resting = false) {
 
 		wagon.nextLandmark = landmarks[wagon.landmarkIndex].mileMarker;
 		$("#distanceToLandmark").text("to next landmark: " + wagon.nextLandmark + " miles");
+
 	}
 }
 
@@ -679,21 +692,52 @@ function crossRiver() {
 	if(wagon.weather == 'snowy') danger *= 1.3;
 	if(wagon.weather == 'rainy') danger *= 1.2;
 
+/************************************************/
 	function loseRandomSupplies() {
+		var newStr = "You lost some supplies while crossing: \n";
 		var oxen = getRandomInt(-5, Math.min(2, wagon.oxen));
-		if(oxen > 0 && wagon.oxen > 2) wagon.oxen -= oxen;
+		if(oxen > 0 && wagon.oxen > 2)
+		{
+			wagon.oxen -= oxen;
+			newStr=newStr+" "+(oxen)+" oxen\n";
+		}
 		var food = getRandomInt(-5, Math.min(100, wagon.food));
-		if(food > 0) wagon.food -= food;
+		if(food > 0 && wagon.food > 100) 
+		{
+			wagon.food -= food;
+			newStr=newStr+" "+food+" food\n";
+		}
 		var clothing = getRandomInt(-5, Math.min(2, wagon.clothing));
-		if(clothing > 0) wagon.clothing -= clothing;
+		if(clothing > 0)
+		{
+			wagon.clothing -= clothing;
+			newStr=newStr+" "+clothing+" clothing\n";
+		}
 		var bait = getRandomInt(-5, Math.min(5, wagon.bait));
-		if(bait > 0) wagon.bait -= bait;
+		if(bait > 0)
+		{
+			wagon.bait -= bait;
+			newStr=newStr+" "+bait+" bait\n";
+		}
 		var wheels = getRandomInt(-5, Math.min(1, wagon.wheels));
-		if(wheels > 0) wagon.wheels -= wheels;
+		if(wheels > 0)
+		{
+			wagon.wheels -= wheels;
+			newStr=newStr+" "+wheels+" wheels\n";
+		}
 		var axles = getRandomInt(-5, Math.min(1, wagon.axles));
-		if(axles > 0) wagon.axles -= axles;
+		if(axles > 0)
+		{
+			wagon.axles -= axles
+			newStr=newStr+" "+axels+" axels\n";
+		}
 		var tongues = getRandomInt(-5, Math.min(1, wagon.tongues));
-		if(tongues > 0) wagon.tongues -= tongues;
+		if(tongues > 0)
+		{
+			wagon.tongues -= tongues;
+			newStr=newStr+" "+tongues+" tongues\n";
+		}
+		bootbox.alert(newStr);
 	}
 
 	bootbox.prompt({
@@ -724,8 +768,10 @@ function crossRiver() {
 			callback: function (result) {
 
 				if(result == 'ford') {
-					if(depth > 3.5 || danger > getRandomInt(4000,6000)) {
-						bootbox.alert("You lost some supplies while crossing.");
+					/***************************************************/
+					if(depth > 3.5) {
+						/***************************/
+						//bootbox.alert("You lost some supplies while crossing.");
 						loseRandomSupplies();
 						displaySupplies();
 					}
@@ -736,8 +782,9 @@ function crossRiver() {
 					return true;
 				}
 				else if(result == 'caulk') {
-					if(danger > getRandomInt(4000,6000)) {
-						bootbox.alert("You lost some supplies while crossing.");
+					/****************************************/
+					if(danger > getRandomInt(5000,10000)) {
+						//bootbox.alert("You lost some supplies while crossing.");
 						loseRandomSupplies();
 						displaySupplies();
 					}
@@ -748,8 +795,9 @@ function crossRiver() {
 					return true;
 				}
 				else if(result == 'ferry') {
-					if(danger > 0.75*getRandomInt(4000,6000)) {
-						bootbox.alert("You lost some supplies while crossing.");
+					/******************************************/
+					if(danger > 0.75*getRandomInt(5000,10000)) {
+						//bootbox.alert("You lost some supplies while crossing.");
 						loseRandomSupplies();
 						displaySupplies();
 					}
@@ -759,6 +807,7 @@ function crossRiver() {
 					wagon.finishedCrossing = true;
 					return true;
 				}
+
 				else if(result == 'wait') {
 					//return false;
 				}
@@ -767,6 +816,22 @@ function crossRiver() {
 				}
 			}
 		});
+}
+
+/***************************************/
+function setHealthStr() {
+
+			if(wagon.health >= 1000)
+				return health[0];
+			else if(wagon.health >= 750)
+				return health[1];
+			else if(wagon.health >= 300)
+				return health[2];
+			else if(wagon.health >= 150)
+				return health[3];
+			else
+				return "Death's Door";
+
 }
 
 function playRiverCrossingGame() {
@@ -978,7 +1043,7 @@ function component(width, height, name, x, y, myGameArea) {
 		if(this.name == "wagon")
 		{
 			var wagon = new Image();
-			wagon.src = "pics/shittywagon.jpg";
+			wagon.src = "pics/oxen1.png";
 			ctx.drawImage(wagon,this.x,this.y,this.width, this.height);
 		}
 		else if(this.name == "landmark")
@@ -1093,7 +1158,7 @@ var wagon;
 var tombstones = getTombstones();
 
 var myGameArea = new gameArea("graphicsCanvas");
-var wagonIcon = new component(40, 40, "wagon", 575, 77.75,myGameArea);
+var wagonIcon = new component(65, 40, "wagon", 575, 77.75,myGameArea);
 var landmarkIcon = new component(55,55,"landmark",15,85,myGameArea);
 var rocks = [];
 myGameArea.start();

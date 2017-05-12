@@ -1,5 +1,5 @@
-I would love to see some borders between the divs, its hard to tell stuff apart
-An alert saying what supplies we lost
 Perhaps people should'nt get sick when the wagon is healthy
 Messing up wagon leader's name crashes the game
-Stop landmark from jumping back until after crossing
+Insert name and Insert tombstone buttons need to be removed before we turn in
+**Add in new sprites
+**Update river crossing popup
