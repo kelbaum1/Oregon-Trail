@@ -184,6 +184,8 @@ function setupGame() {
 	
 	var month = document.getElementById("month").value;
 	wagon = new Wagon(month, leaderType, people);
+	
+	return true;
 }
 
 function goFishing() {
