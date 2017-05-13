@@ -20,10 +20,11 @@ $(document).ready(function(){
     });
 	
 	$("#btnSetup").click(function() {
-		setupGame();
-		$(".setupPage").hide();
-		updateStorePrices();
-		$(".storePage").show();
+		if (setupGame()) {
+			$(".setupPage").hide();
+			updateStorePrices();
+			$(".storePage").show();
+		}
 	});
 	
 	$("#btnStore").click(function() {

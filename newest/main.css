@@ -169,7 +169,7 @@ button
 	padding: 10%;
 	border-radius: 5%;
 	background: transparent;
-	border: none;
+	border: 2px solid black;
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
@@ -178,6 +178,7 @@ button
 	font-weight: bolder;
 	outline: none;
 	font-size: 1.3em;
+	width: 150px;
 }
 
 
@@ -185,7 +186,7 @@ button
 	padding: 10%;
 	border-radius: 5%;
 	background: transparent;
-	border: none;
+	border: 2px solid black;
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
@@ -194,6 +195,7 @@ button
 	font-weight: bolder;
 	outline: none;
 	font-size: 1.3em;
+	width: 150px;
 }
 
 
@@ -275,7 +277,7 @@ table{
 	padding: 10%;
 	border-radius: 5%;
 	background: transparent;
-	border: none;
+	border: 2px solid black;
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
@@ -284,6 +286,7 @@ table{
 	font-weight: bolder;
 	outline: none;
 	font-size: 1.3em;
+	width: 150px;
 }
 
 #left3bottom button:hover {background-color: #F8F8FF}
