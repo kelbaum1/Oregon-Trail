@@ -146,12 +146,12 @@
 			
 	<table id="statusTable">
 		<tr>
-			<td id="rations">Rations:</td>
+			<td>Rations:</td>
 			<td id="axles">Axles:</td>
 		</tr>
 		<br>
 		<tr>
-			<td id="food">Food:</td>
+			<td>Food:</td>
 			<td id="tongues">Tongues:</td>
 		</tr>
 		<br>
@@ -175,15 +175,54 @@
 <div id="left3">
 	<div id="left3top">
 		<p id="conditions">Conditions</p>
-		<p id="currentDate">date:</p>
-		<p id="weather">weather:</p>
+		<table id="condTable">
+			<tr>
+				<td class="labels" id="dateLabel">Date:</td>
+				<td id="currentDate" class="values"></td>
+			</tr>
+			<tr>
+				<td class="labels">Weather:</td>
+				<td id="weather" class="values"></td>
+			</tr>
+		</table>
 		<p id="distance">Distance</p>
-		<p id="distanceToLandmark">to landmark:</p>
-		<p id="distanceTraveled">traveled:</p>
+		<table id="distTable">
+			<tr>
+				<td class="labels">To Landmark:</td>
+				<td id="distanceToLandmark" class="values"></td>
+			</tr>
+			<tr>
+				<td class="labels">Traveled:</td>
+				<td id="distanceTraveled" class="values"></td>
+			</tr>
+		</table>
 		<p id="wagon">Wagon</p>
-		<p id="pace">pace:</p>
-		<p id="health">health:</p>
-		<p id="wagonStatus">Wagon: stopped</p>
+		<table id="wagonTable">
+			<tr>
+				<td class="labels">Pace:</td>
+				<td id="pace" class="values"></td>
+			</tr>
+			<tr>
+				<td class="labels">Rations:</td>
+				<td id="rations" class="values"></td>
+			</tr>
+			<tr>
+				<td class="labels">Health:</td>
+				<td id="health" class="values"></td>
+			</tr>
+			<tr>
+				<td class="labels">Food Left:</td>
+				<td id="food" class="values"></td>
+			</tr>
+			<tr>
+				<td class="labels">&nbsp;</td>
+				<td class="values">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="labels">Wagon:</td>
+				<td id="wagonStatus" class="values"></td>
+			</tr>
+		</table>
 		<p id="log">Last action:</p>
 		<p id="nextLandmark"></p>
 	</div>

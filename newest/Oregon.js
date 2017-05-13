@@ -36,16 +36,16 @@ $(document).ready(function(){
 			$("#btnPause").prop("disabled",true);
 			displaySupplies();
 
-			$("#currentDate").text("date: " + monthName[wagon.date.getMonth()] + " " + wagon.date.getDate() + ", " + wagon.date.getFullYear());
-			$("#rations").text("rations: " + wagon.rations);
-			$("#pace").text("pace: " + wagon.pace);
+			$("#currentDate").text(monthName[wagon.date.getMonth()] + " " + wagon.date.getDate() + ", " + wagon.date.getFullYear());
+			$("#rations").text(wagon.rations);
+			$("#pace").text(wagon.pace);
 			/***************************************************/
 			var healthStr = setHealthStr();
-			//$("#health").text("health: " + wagon.health);
-			$("#health").text("health: " + healthStr);
-			$("#weather").text("weather: " + wagon.weather);
+			//$("#health").text(wagon.health);
+			$("#health").text(healthStr);
+			$("#weather").text(wagon.weather);
 			$("#log").text("arrived at: " + landmarks[wagon.landmarkIndex].name);
-			$("#distanceToLandmark").text("to landmark: " + wagon.nextLandmark + " miles");
+			$("#distanceToLandmark").text(wagon.nextLandmark + " miles");
 			$("#people").text("people: " + wagon.people[0].name + " " + wagon.people[0].health + " "+ wagon.people[1].name + " " + wagon.people[1].health + " "+ wagon.people[2].name + " " + wagon.people[2].health + " "+ wagon.people[3].name + " " + wagon.people[3].health + " "+ wagon.people[4].name + " " + wagon.people[4].health);
 		}
 	});
@@ -65,7 +65,7 @@ $(document).ready(function(){
 
 	$("#btnRations").click(function(){
 		updateRations();
-		$("#rations").text("rations: " + wagon.rations);
+		$("#rations").text(wagon.rations);
 	});
 
 	$("#btnBuy").click(function(){
@@ -88,13 +88,13 @@ $(document).ready(function(){
 		
 	$("#btnFish").click(function(){
 		goFishing();
-		$("#food").text("food remaining: " + wagon.food + " pounds");
+		$("#food").text(wagon.food + " lbs");
 		$("#bait").text("fishing bait remaining: " + wagon.bait);
 	});
 
 	$("#btnPace").click(function(){
 		updatePace();
-		$("#pace").text("pace: " + wagon.pace);
+		$("#pace").text(wagon.pace);
 	});
 
 	$("#btnPause").click(function(){
@@ -148,7 +148,7 @@ function updateStorePrices() {
 }
 
 function displaySupplies() {
-	$("#food").text("food: " + wagon.food + " pounds");
+	$("#food").text(wagon.food + " lbs");
 	$("#wheels").text("wheels: " + wagon.wheels);
 	$("#axles").text("axles: " + wagon.axles);
 	$("#tongues").text("tongues: " + wagon.tongues);
@@ -209,7 +209,8 @@ function takeRest() {
 			for(var i = 0; i < result && i < maxRest; i++) {
 				travelOneDay(true);
 			}
-			$("#health").text("health: " + wagon.health);
+			var healthStr = setHealthStr();
+			$("#health").text(healthStr);
 		}
 	});
 }
@@ -376,7 +377,7 @@ function updateSupplies() {
 
 
 function stop() {
-	$("#wagonStatus").text("Wagon: stopped");
+	$("#wagonStatus").text("stopped");
 	$("#btnPause").prop("disabled",true);
 	clearInterval(loop);
 }
@@ -386,7 +387,7 @@ function startTravel() {
 	$("#btnBuy").prop("disabled",true);
 	$("#btnTalk").prop("disabled",true);
 	$("#btnFish").prop("disabled",false);
-	$("#wagonStatus").text("Wagon: moving");
+	$("#wagonStatus").text("moving");
 	loop = setInterval(travelOneDay, 1000);
 }
 
@@ -475,7 +476,7 @@ function travelOneDay(resting = false) {
 
 	// increment the date
 	wagon.date.setDate(wagon.date.getDate() + 1);
-	$("#currentDate").text("date: " + monthName[wagon.date.getMonth()] + " " + wagon.date.getDate() + ", " + wagon.date.getFullYear());
+	$("#currentDate").text(monthName[wagon.date.getMonth()] + " " + wagon.date.getDate() + ", " + wagon.date.getFullYear());
 	
 	// update food
 	var rations = 0;
@@ -492,12 +493,12 @@ function travelOneDay(resting = false) {
 	else if(wagon.rations == 'meager') ;
 	else if(wagon.rations == 'bare bones') wagon.health -=5*wagon.people.length;
 	else {}
-	$("#food").text("food remaining: " + wagon.food + " pounds");
+	$("#food").text(wagon.food + " lbs");
 	
 	// update weather
 	if(getRandomInt(0, 1000) < 200) {
 		wagon.weather = weather[getRandomInt(0, weather.length - 1)];
-		$("#weather").text("weather: " + wagon.weather);
+		$("#weather").text(wagon.weather);
 	}
 	if(wagon.weather == 'fair') wagon.health += 10;
 	else if(wagon.weather == 'hot') wagon.health -= 10;
@@ -581,15 +582,15 @@ function travelOneDay(resting = false) {
 		}
 
 		wagon.nextLandmark -= pace;
-		$("#distanceToLandmark").text("to landmark: " + wagon.nextLandmark + " miles");
+		$("#distanceToLandmark").text(wagon.nextLandmark + " miles");
 		wagon.milesTraveled += pace;
-		$("#distanceTraveled").text("traveled: " + wagon.milesTraveled + " miles");
+		$("#distanceTraveled").text(wagon.milesTraveled + " miles");
 	}
 
 	if(wagon.health < 0) wagon.health = 0;
 	/***********************************************/
 	var healthStr = setHealthStr();
-	$("#health").text("health: " + healthStr);
+	$("#health").text(healthStr);
 	if(wagon.health >= 1000) wagon.multiplier = 10;
 	else if(wagon.health >= 750) wagon.multiplier = 5;
 	else if(wagon.health >= 300) wagon.multiplier = 2;
@@ -687,7 +688,7 @@ function travelOneDay(resting = false) {
 		}
 
 		wagon.nextLandmark = landmarks[wagon.landmarkIndex].mileMarker;
-		$("#distanceToLandmark").text("to landmark: " + wagon.nextLandmark + " miles");
+		$("#distanceToLandmark").text(wagon.nextLandmark + " miles");
 
 	}
 }
