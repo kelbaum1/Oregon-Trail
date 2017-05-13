@@ -148,7 +148,9 @@ button
 
 .mainPage
 {
+	background-size: 100% 100%;
 	height: 100%;
+	overflow: hidden;
 }
 
 /*body
@@ -267,6 +269,11 @@ table{
 	padding-left: 5%;
 	padding-top: 5%;
 	font-weight: bolder;
+}
+#conditions, #distance, #wagon{
+	text-align: center;
+	font-weight: bolder;
+	font-size: 20px;
 }
 
 #left3bottom{

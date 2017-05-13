@@ -45,7 +45,7 @@ $(document).ready(function(){
 			$("#health").text("health: " + healthStr);
 			$("#weather").text("weather: " + wagon.weather);
 			$("#log").text("arrived at: " + landmarks[wagon.landmarkIndex].name);
-			$("#distanceToLandmark").text("to next landmark: " + wagon.nextLandmark + " miles");
+			$("#distanceToLandmark").text("to landmark: " + wagon.nextLandmark + " miles");
 			$("#people").text("people: " + wagon.people[0].name + " " + wagon.people[0].health + " "+ wagon.people[1].name + " " + wagon.people[1].health + " "+ wagon.people[2].name + " " + wagon.people[2].health + " "+ wagon.people[3].name + " " + wagon.people[3].health + " "+ wagon.people[4].name + " " + wagon.people[4].health);
 		}
 	});
@@ -376,7 +376,7 @@ function updateSupplies() {
 
 
 function stop() {
-	$("#wagonStatus").text("Wagon is stopped");
+	$("#wagonStatus").text("Wagon: stopped");
 	$("#btnPause").prop("disabled",true);
 	clearInterval(loop);
 }
@@ -386,7 +386,7 @@ function startTravel() {
 	$("#btnBuy").prop("disabled",true);
 	$("#btnTalk").prop("disabled",true);
 	$("#btnFish").prop("disabled",false);
-	$("#wagonStatus").text("Wagon is moving");
+	$("#wagonStatus").text("Wagon: moving");
 	loop = setInterval(travelOneDay, 1000);
 }
 
@@ -581,9 +581,9 @@ function travelOneDay(resting = false) {
 		}
 
 		wagon.nextLandmark -= pace;
-		$("#distanceToLandmark").text("to next landmark: " + wagon.nextLandmark + " miles");
+		$("#distanceToLandmark").text("to landmark: " + wagon.nextLandmark + " miles");
 		wagon.milesTraveled += pace;
-		$("#distanceTraveled").text("distance traveled: " + wagon.milesTraveled + " miles");
+		$("#distanceTraveled").text("traveled: " + wagon.milesTraveled + " miles");
 	}
 
 	if(wagon.health < 0) wagon.health = 0;
@@ -653,6 +653,8 @@ function travelOneDay(resting = false) {
 		$("#log").text("arrived at: " + landmarks[wagon.landmarkIndex].name);
 		$("#nextLandmark").text("next stop: " + landmarks[wagon.landmarkIndex + 1].name);
 		
+		bootbox.alert("You've arrived at " + landmarks[wagon.landmarkIndex].name + "!");
+		
 		if(landmarks[wagon.landmarkIndex].fort) {
 			$("#btnBuy").prop("disabled",false);
 			$("#btnTalk").prop("disabled",false);
@@ -685,7 +687,7 @@ function travelOneDay(resting = false) {
 		}
 
 		wagon.nextLandmark = landmarks[wagon.landmarkIndex].mileMarker;
-		$("#distanceToLandmark").text("to next landmark: " + wagon.nextLandmark + " miles");
+		$("#distanceToLandmark").text("to landmark: " + wagon.nextLandmark + " miles");
 
 	}
 }
@@ -1205,7 +1207,7 @@ function drawRouteToCurPos(from, to) {
 	var ctx = canvas.getContext("2d");
 
 	ctx.beginPath();
-	
+	ctx.lineWidth = 3;
 	ctx.moveTo(landmarks[from].x, landmarks[from].y);
 	ctx.lineTo(landmarks[to].x, landmarks[to].y);
 	ctx.stroke();
