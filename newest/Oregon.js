@@ -643,6 +643,8 @@ function travelOneDay(resting = false) {
 	if(wagon.atLandmark) {
 		stop();
 		// display new graphic
+		
+		drawRouteToCurPos(wagon.landmarkIndex, wagon.landmarkIndex + 1);
 		wagon.landmarkIndex++;
 		
 		$("#log").text("arrived at: " + landmarks[wagon.landmarkIndex].name);
@@ -1194,6 +1196,17 @@ function component(width, height, name, x, y, myGameArea) {
 			return crash;
     }
 }
+
+function drawRouteToCurPos(from, to) {
+	var canvas = document.getElementById("mapCanvas");
+	var ctx = canvas.getContext("2d");
+
+	ctx.beginPath();
+	
+	ctx.moveTo(landmarks[from].x, landmarks[from].y);
+	ctx.lineTo(landmarks[to].x, landmarks[to].y);
+	ctx.stroke();
+};
 
 // global types
 var illness = ['measles', 'a snakebite', 'dysentery', 'typhoid', 'cholera', 'exhaustion'];
