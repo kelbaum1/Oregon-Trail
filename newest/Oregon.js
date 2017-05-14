@@ -201,8 +201,8 @@ function setupGame() {
 function goFishing() {
 	if(wagon.bait > 0) {
 		wagon.bait--;
-		var fish = getRandomInt(0, 10);
-		bootbox.alert("You caught " + fish + " fish.");
+		var fish = getRandomInt(0, 20);
+		bootbox.alert("You caught " + fish + " fish.  For a total of " + fish*10 + " pounds of food");
 		wagon.food += fish*10;
 	}
 	else {
@@ -508,9 +508,9 @@ function travelOneDay(resting = false) {
 		wagon.food = 0;
 		wagon.health -= 10*wagon.people.length;
 	}
-	if(wagon.rations == 'filling') wagon.health += 3*wagon.people.length;
+	if(wagon.rations == 'filling') wagon.health += 5;
 	else if(wagon.rations == 'meager') ;
-	else if(wagon.rations == 'bare bones') wagon.health -=5*wagon.people.length;
+	else if(wagon.rations == 'bare bones') wagon.health -=10;
 	else {}
 	$("#food").text(wagon.food + " lbs");
 	
@@ -557,7 +557,7 @@ function travelOneDay(resting = false) {
 		
 		pace *= wagon.oxen;
 		
-		var pixelPace = pace * (560 / landmarks[wagon.landmarkIndex].mileMarker);
+		var pixelPace = pace * (500 / landmarks[wagon.landmarkIndex].mileMarker);
 		var flag = true;
 		/****************************************************************/
 		while(wagon.milesToday < pixelPace)
@@ -700,25 +700,18 @@ function travelOneDay(resting = false) {
 			wagon.passedFork = false;
 		}
 		// you've reached the end of the trail
-		if(wagon.landmarkIndex == landmarks.length - 1) {
+		if(landmarks[wagon.landmarkIndex].name == 'The Dalles') {
 			var success = playRiverCrossingGame();
-			if(success) {
-				insertScore();
-				bootbox.alert("Congratulations, you made it to Oregon!\nScore: " + countPoints + " points");
-				$("#log").text("Congratulations, you made it to Oregon!\nScore: " + wagon.points + " points");
-				$(".mainPage").hide();
-				$(".titlePage").show();
-			}
-			else {
-				bootbox.alert("You failed to cross the river.");
-				$("#log").text("Game over");
-				insertTombstone();
-				$(".mainPage").hide();
-				$(".titlePage").show();
-			}
+/*************************************************/
 			return;
 		}
-
+		if(wagon.landmarkIndex == landmarks.length - 1)
+		{
+			bootbox.alert("Congratulations, you made it to Oregon!\nScore: " + countPoints + " points");
+			$("#log").text("Congratulations, you made it to Oregon!\nScore: " + wagon.points + " points");
+			$(".mainPage").hide();
+			$(".titlePage").show();
+		}
 		wagon.nextLandmark = landmarks[wagon.landmarkIndex].mileMarker;
 		$("#distanceToLandmark").text(wagon.nextLandmark + " miles");
 
@@ -1129,6 +1122,12 @@ function updateRiverCrossing(gameArea,riverWagon)
 	{
 		confirm("Congrats, you made it to Oregon!");
 		gameArea.stop();
+		insertScore();
+		bootbox.alert("Congratulations, you made it to Oregon!\nScore: " + countPoints + " points");
+		$("#log").text("Congratulations, you made it to Oregon!\nScore: " + wagon.points + " points");
+		$(".mainPage").hide();
+		$(".titlePage").show();
+			
 
 	}
 }
