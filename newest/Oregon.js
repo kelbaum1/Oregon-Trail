@@ -1296,26 +1296,25 @@ var weather = ['cloudy', 'sunny', 'fair', 'rainy', 'snowy'];
 var basePrices = {oxen:20, food:0.20, clothing:10, bait:15, wheel:10, axle:10, tongue:10};
 
 var landmarks = [
-	new Landmark('Independence, Missouri', 598, 158, 102, true),
-	new Landmark('Kansas River Crossing', 567, 151, 82, false, true),
-	new Landmark('Big Blue River Crossing', 552, 144, 118, false, true),
-	new Landmark('Fort Kearney', 520, 142, 250, true),
-	new Landmark('Chimney Rock', 479, 138, 86),
-	new Landmark('Fort Laramie', 429, 130, 190, true),
-	new Landmark('Independence Rock', 384, 117, 102),
-	new Landmark('South Pass', 349, 124, 57, false, false, true),
-		new Landmark('Green River Crossing', 319, 126, 143, false, true),
-		new Landmark('Fort Bridger', 315, 144, 150, true),
-	new Landmark('Soda Springs', 300, 122, 57),
-	new Landmark('Fort Hall', 264, 114, 164, true),
-	new Landmark('Snake River Crossing', 221, 108, 113, false, true),
-	new Landmark('Fort Boise', 200, 90, 160, true),
-	new Landmark('Blue Mountains', 172, 75, 180, false, false, true),
-		new Landmark('The Dalles', 144, 66, 100),
-		new Landmark('Fort Walla Walla', 165, 60, 150, true),
+	new Landmark('Independence, Missouri', 598, 168, 102, true),
+	new Landmark('Kansas River Crossing', 567, 161, 82, false, true),
+	new Landmark('Big Blue River Crossing', 552, 154, 118, false, true),
+	new Landmark('Fort Kearney', 520, 152, 250, true),
+	new Landmark('Chimney Rock', 479, 148, 86),
+	new Landmark('Fort Laramie', 429, 140, 190, true),
+	new Landmark('Independence Rock', 384, 127, 102),
+	new Landmark('South Pass', 349, 134, 57, false, false, true),
+		new Landmark('Green River Crossing', 319, 136, 143, false, true),
+		new Landmark('Fort Bridger', 315, 154, 150, true),
+	new Landmark('Soda Springs', 300, 132, 57),
+	new Landmark('Fort Hall', 264, 124, 164, true),
+	new Landmark('Snake River Crossing', 221, 118, 113, false, true),
+	new Landmark('Fort Boise', 200, 100, 160, true),
+	new Landmark('Blue Mountains', 172, 85, 180, false, false, true),
+		new Landmark('The Dalles', 144, 76, 100),
+		new Landmark('Fort Walla Walla', 165, 70, 150, true),
 	//new Landmark('Columbia River', 50, false, true),
-	new Landmark('Oregon City, Oregon', 112, 60, 0)
-	//landmarks[wagon.landmarkIndex].name
+	new Landmark('Oregon City, Oregon', 112, 70, 0)
 ];
 
 // returns a random integer between min and max, inclusive
