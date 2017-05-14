@@ -234,12 +234,17 @@ button
 	background:url(pics/oregontrail-3.jpg);
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
+	
+	display: block;
+    margin: 0 auto;
 }
 
 #graphicsCanvas{
 	background-image: url('pics/mountains.jpg');
-	
 	background-size: 100% 100%;
+	
+	display: block;
+    margin: 0 auto;
 }
 
 #text
@@ -253,6 +258,25 @@ table{
 	width: 100%;
 	font-family: Copperplate Gothic Light;
 	font-weight: bold;
+}
+
+.values2{
+	font-weight: normal;
+	text-align: left;
+}
+
+#logLabel, #nextLandmarkLabel{
+	width: 100px;
+}
+
+#log, #nextLandmark{
+	width: 300px;
+}
+
+.header{
+	font-weight: bolder;
+	text-align: left;
+	font-size: 20px;
 }
 
 #left3{

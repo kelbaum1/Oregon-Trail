@@ -143,30 +143,63 @@
 		<canvas id="mapCanvas" width="665" height="215"
 				style="border:1px solid #000000;">
 	</div>
-			
+	
+	<table id="logTable">
+		<tr>
+			<td id="logLabel" class="labels"></td>
+			<td id="log" class="values2"></td>
+			<td class="labels">&nbsp;</td>
+			<td class="values">&nbsp;</td>
+		</tr>
+		<tr>
+			<td id="nextLandmarkLabel" class="labels">&nbsp;</td>
+			<td id="nextLandmark" class="values2">&nbsp;</td>
+			<td class="labels">&nbsp;</td>
+			<td class="values">&nbsp;</td>
+		</tr>
+	</table>
+	<br>
+	<br>
 	<table id="statusTable">
 		<tr>
-			<td>Rations:</td>
-			<td id="axles">Axles:</td>
+			<th class="header" colspan="2">Supplies</th>
+			<th class="header" colspan="2">Party</th>
 		</tr>
-		<br>
 		<tr>
-			<td>Food:</td>
-			<td id="tongues">Tongues:</td>
+			<td class="labels">Oxen:</td>
+			<td id="oxen" class="values2">&nbsp;</td>
+			<td id="p1Label" class="labels">&nbsp;</td>
+			<td id="p1" class="values2">&nbsp;</td>
 		</tr>
-		<br>
 		<tr>
-			<td id="bait">Fishing Bait:</td>
-			<td id="clothing">Clothes:</td>
+			<td class="labels">Wheels:</td>
+			<td id="wheels" class="values2">&nbsp;</td>
+			<td id="p2Label" class="labels">&nbsp;</td>
+			<td id="p2" class="values2">&nbsp;</td>
 		</tr>
-		<br>
 		<tr>
-			<td id="wheels">Wheels:</td>
-			<td id="oxen">Oxen:</td>
+			<td class="labels">Axles:</td>
+			<td id="axles" class="values2">&nbsp;</td>
+			<td id="p3Label" class="labels">&nbsp;</td>
+			<td id="p3" class="values2">&nbsp;</td>
 		</tr>
-		<br>
 		<tr>
-			<td id="people">People:</td>
+			<td class="labels">Tongues:</td>
+			<td id="tongues" class="values2">&nbsp;</td>
+			<td id="p4Label" class="labels">&nbsp;</td>
+			<td id="p4" class="values2">&nbsp;</td>
+		</tr>
+		<tr>
+			<td class="labels">Clothes:</td>
+			<td id="clothing" class="values2">&nbsp;</td>
+			<td id="p5Label" class="labels">&nbsp;</td>
+			<td id="p5" class="values2">&nbsp;</td>
+		</tr>
+		<tr>
+			<td class="labels">Fishing Bait:</td>
+			<td id="bait" class="values2">&nbsp;</td>
+			<td class="labels">&nbsp;</td>
+			<td class="values2">&nbsp;</td>
 		</tr>
 	</table>
 	
@@ -219,12 +252,14 @@
 				<td class="values">&nbsp;</td>
 			</tr>
 			<tr>
+				<td class="labels">&nbsp;</td>
+				<td class="values">&nbsp;</td>
+			</tr>
+			<tr>
 				<td class="labels">Wagon:</td>
 				<td id="wagonStatus" class="values"></td>
 			</tr>
 		</table>
-		<p id="log">Last action:</p>
-		<p id="nextLandmark"></p>
 	</div>
 	
 	<div id="left3bottom">

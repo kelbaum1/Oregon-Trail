@@ -44,9 +44,21 @@ $(document).ready(function(){
 			//$("#health").text(wagon.health);
 			$("#health").text(healthStr);
 			$("#weather").text(wagon.weather);
-			$("#log").text("arrived at: " + landmarks[wagon.landmarkIndex].name);
+			$("#logLabel").text("arrived at: ");
+			$("#log").text(landmarks[wagon.landmarkIndex].name);
 			$("#distanceToLandmark").text(wagon.nextLandmark + " miles");
-			$("#people").text("people: " + wagon.people[0].name + " " + wagon.people[0].health + " "+ wagon.people[1].name + " " + wagon.people[1].health + " "+ wagon.people[2].name + " " + wagon.people[2].health + " "+ wagon.people[3].name + " " + wagon.people[3].health + " "+ wagon.people[4].name + " " + wagon.people[4].health);
+			//$("#people").text("people: " + wagon.people[0].name + " " + wagon.people[0].health + " "+ wagon.people[1].name + " " + wagon.people[1].health + " "+ wagon.people[2].name + " " + wagon.people[2].health + " "+ wagon.people[3].name + " " + wagon.people[3].health + " "+ wagon.people[4].name + " " + wagon.people[4].health);
+			$("#p1Label").text(wagon.people[0].name + ":");
+			$("#p2Label").text(wagon.people[1].name + ":");
+			$("#p3Label").text(wagon.people[2].name + ":");
+			$("#p4Label").text(wagon.people[3].name + ":");
+			$("#p5Label").text(wagon.people[4].name + ":");
+			
+			$("#p1").text(wagon.people[0].health);
+			$("#p2").text(wagon.people[1].health);
+			$("#p3").text(wagon.people[2].health);
+			$("#p4").text(wagon.people[3].health);
+			$("#p5").text(wagon.people[4].health);
 		}
 	});
 
@@ -89,7 +101,7 @@ $(document).ready(function(){
 	$("#btnFish").click(function(){
 		goFishing();
 		$("#food").text(wagon.food + " lbs");
-		$("#bait").text("fishing bait remaining: " + wagon.bait);
+		$("#bait").text(wagon.bait);
 	});
 
 	$("#btnPace").click(function(){
@@ -149,12 +161,12 @@ function updateStorePrices() {
 
 function displaySupplies() {
 	$("#food").text(wagon.food + " lbs");
-	$("#wheels").text("wheels: " + wagon.wheels);
-	$("#axles").text("axles: " + wagon.axles);
-	$("#tongues").text("tongues: " + wagon.tongues);
-	$("#oxen").text("oxen: " + wagon.oxen);
-	$("#clothing").text("clothing: " + wagon.clothing);
-	$("#bait").text("bait: " + wagon.bait);
+	$("#wheels").text(wagon.wheels);
+	$("#axles").text(wagon.axles);
+	$("#tongues").text(wagon.tongues);
+	$("#oxen").text(wagon.oxen);
+	$("#clothing").text(wagon.clothing);
+	$("#bait").text(wagon.bait);
 }
 
 function setupGame() {
@@ -454,7 +466,8 @@ function travelOneDay(resting = false) {
 	if(!wagon.finishedCrossing) {
 		
 		if(crossRiver())
-			$("#log").text("finished crossing: " + landmarks[wagon.landmarkIndex].name);
+			$("#logLabel").text("finished crossing: ");
+			$("#log").text(landmarks[wagon.landmarkIndex].name);
 
 		return;
 	}
@@ -471,8 +484,10 @@ function travelOneDay(resting = false) {
 	}
 	wagon.atLandmark = false;
 
-	$("#log").text("last left: " + landmarks[wagon.landmarkIndex].name);
-	$("#nextLandmark").text("next stop: " + landmarks[wagon.landmarkIndex + 1].name);
+	$("#logLabel").text("last left: ");
+	$("#log").text(landmarks[wagon.landmarkIndex].name);
+	$("#nextLandmarkLabel").text("next stop: ");
+	$("#nextLandmark").text(landmarks[wagon.landmarkIndex + 1].name);
 
 	// increment the date
 	wagon.date.setDate(wagon.date.getDate() + 1);
@@ -636,8 +651,18 @@ function travelOneDay(resting = false) {
 		}
 		else {} // dead
 	}
-	$("#people").text("people: " + wagon.people[0].name + " " + wagon.people[0].health + " "+ wagon.people[1].name + " " + wagon.people[1].health + " "+ wagon.people[2].name + " " + wagon.people[2].health + " "+ wagon.people[3].name + " " + wagon.people[3].health + " "+ wagon.people[4].name + " " + wagon.people[4].health);
+	//$("#people").text("people: " + wagon.people[0].name + " " + wagon.people[0].health + " "+ wagon.people[1].name + " " + wagon.people[1].health + " "+ wagon.people[2].name + " " + wagon.people[2].health + " "+ wagon.people[3].name + " " + wagon.people[3].health + " "+ wagon.people[4].name + " " + wagon.people[4].health);
+	$("#p1Label").text(wagon.people[0].name + ":");
+	$("#p2Label").text(wagon.people[1].name + ":");
+	$("#p3Label").text(wagon.people[2].name + ":");
+	$("#p4Label").text(wagon.people[3].name + ":");
+	$("#p5Label").text(wagon.people[4].name + ":");
 	
+	$("#p1").text(wagon.people[0].health);
+	$("#p2").text(wagon.people[1].health);
+	$("#p3").text(wagon.people[2].health);
+	$("#p4").text(wagon.people[3].health);
+	$("#p5").text(wagon.people[4].health);
 	// get random events, both good and bad
 	
 	// animate the wagon
@@ -651,8 +676,10 @@ function travelOneDay(resting = false) {
 		drawRouteToCurPos(wagon.landmarkIndex, wagon.landmarkIndex + 1);
 		wagon.landmarkIndex++;
 		
-		$("#log").text("arrived at: " + landmarks[wagon.landmarkIndex].name);
-		$("#nextLandmark").text("next stop: " + landmarks[wagon.landmarkIndex + 1].name);
+		$("#logLabel").text("arrived at: ");
+		$("#log").text(landmarks[wagon.landmarkIndex].name);
+		$("#nextLandmarkLabel").text("next stop: ");
+		$("#nextLandmark").text(landmarks[wagon.landmarkIndex + 1].name);
 		
 		bootbox.alert("You've arrived at " + landmarks[wagon.landmarkIndex].name + "!");
 		
