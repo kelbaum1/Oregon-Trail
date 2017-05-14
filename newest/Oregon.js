@@ -127,7 +127,7 @@ function updateStorePrices() {
 
 	document.getElementById("buyOxen").value = 0;
 	document.getElementById("buyFood").value = 0;
-	document.getElementById("buyClothes").value = 0;
+	document.getElementById("buyClothing").value = 0;
 	document.getElementById("buyBait").value = 0;
 	document.getElementById("buyWheels").value = 0;
 	document.getElementById("buyAxles").value = 0;
@@ -357,13 +357,13 @@ function updateSupplies() {
 
 	var oxen = document.getElementById("buyOxen").value;
 	var food = document.getElementById("buyFood").value;
-	var clothes = document.getElementById("buyClothes").value;
+	var clothing = document.getElementById("buyClothing").value;
 	var bait = document.getElementById("buyBait").value;
 	var wheels = document.getElementById("buyWheels").value;
 	var axles = document.getElementById("buyAxles").value;
 	var tongues = document.getElementById("buyTongues").value;
 	
-	var supplies = [oxen, food, clothes, bait, wheels, axles, tongues];
+	var supplies = [oxen, food, clothing, bait, wheels, axles, tongues];
 	var prices = Object.values(basePrices);
 
 	for(var i = 0; i < supplies.length; i++) {
@@ -371,6 +371,31 @@ function updateSupplies() {
 			return false;
 		}
 		else {
+			if(parseInt(oxen) + wagon.oxen > 10) {
+				bootbox.alert("You cannot buy so many oxen; the wagon can only support 10 oxen total.");
+				return false;
+			}
+			if(parseInt(food) + wagon.food > 2000) {
+				bootbox.alert("You cannot buy that much food; the wagon can only hold 2000 pounds total.");
+				return false;
+			}
+			if(parseInt(clothing) + wagon.clothing > 50) {
+				bootbox.alert("You cannot buy so many clothes; the wagon can only hold 50 sets total.");
+				return false;
+			}
+			if(parseInt(wheels) + wagon.wheels > 3) {
+				bootbox.alert("You cannot buy so many wheels; the wagon can only hold 3 wheels total.");
+				return false;
+			}
+			if(parseInt(axles) + wagon.axles > 3) {
+				bootbox.alert("You cannot buy so many axles; the wagon can only hold 3 axles total.");
+				return false;
+			}
+			if(parseInt(tongues) + wagon.tongues > 3) {
+				bootbox.alert("You cannot buy so many tongues; the wagon can only hold 3 tongues total.");
+				return false;
+			}
+
 			cost += parseInt(supplies[i]) * prices[i] * multiplier;
 			if(cost > budget) {
 				bootbox.alert("You don't have enough money to buy all these supplies.");
@@ -381,7 +406,7 @@ function updateSupplies() {
 	
 	wagon.oxen += parseInt(oxen);
 	wagon.food += parseInt(food);
-	wagon.clothing += parseInt(clothes);
+	wagon.clothing += parseInt(clothing);
 	wagon.bait += parseInt(bait);
 	wagon.wheels += parseInt(wheels);
 	wagon.axles += parseInt(axles);
@@ -426,8 +451,9 @@ function getTombstones() {
 
 function insertTombstone() {
 	bootbox.prompt({
-		title: "Sadly, your entire party died on the trip to Oregon. Write a message for your tombstone:",
+		title: "Sadly, your entire party died on the trip to Oregon.<br>Write a message for your tombstone:",
 		inputType: 'textarea',
+		value: "Requiescat In Pace",
 		callback: function (result) {
 			xmlhttp = new XMLHttpRequest();
 			var dateFormatted = [wagon.date.getFullYear(), wagon.date.getMonth() + 1, wagon.date.getDate()].join('-');
@@ -441,7 +467,15 @@ function getScores() {
 	xmlhttp = new XMLHttpRequest();
 	xmlhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
-			var messageText = this.responseText;
+
+			var players = JSON.parse(this.responseText);
+			var messageText = "<table>";
+			//messageText += "<tr><th>Name</th><th>Points</th><th>Rating</th></tr>";
+			for(i = 0; i < players.length; i++) {
+				messageText += "<tr><td>" + players[i][1] + "</td><td>" + players[i][2] + "</td><td>" + players[i][3] + "</td></tr>";
+			}
+			messageText += "</table>";
+
 			var dialog = bootbox.dialog({
 				title: 'Top Scores',
 				message: messageText,
@@ -457,9 +491,9 @@ function getScores() {
 	xmlhttp.send();
 }
 
-function insertScore() {
+function insertScore(newRating = 'Greenhorn') {
 	xmlhttp = new XMLHttpRequest();
-	xmlhttp.open("GET", "https://swe.umbc.edu/~kelbaum1/Oregon/connect.php?arg=" + "insertScore" + "&usr=" + wagon.people[0] + "&points=" + wagon.points + "&rating=" + "something", true);
+	xmlhttp.open("GET", "https://swe.umbc.edu/~kelbaum1/Oregon/connect.php?arg=" + "insertScore" + "&usr=" + wagon.people[0].name + "&points=" + wagon.points + "&rating=" + newRating, true);
 	xmlhttp.send();
 }
 
@@ -588,8 +622,8 @@ function travelOneDay(resting = false) {
 		while(!(tombstones === undefined || tombstones.length == 0) && wagon.milesTraveled + pace >= tombstones[0][4]) {
 			bootbox.alert({
 				title: "Tombstone at Mile " + tombstones[0][4],
-				message: tombstones[0][2] + " " + tombstones[0][3] + " " + tombstones[0][5]}
-				);
+				message: tombstones[0][2] + "<br>" + tombstones[0][3] + "<br>" + '\"' + tombstones[0][5] + '\"',
+				});
 			pace = tombstones[0][4] - wagon.milesTraveled;
 			tombstones.splice(0, 1);
 			stop();
@@ -862,7 +896,7 @@ function crossRiver() {
 				}
 
 				else if(result == 'wait') {
-					//return false;
+					travelOneDay(true);
 				}
 				else {
 					//return false;
@@ -1240,6 +1274,7 @@ function drawRouteToCurPos(from, to) {
 
 	ctx.beginPath();
 	ctx.lineWidth = 3;
+	ctx.strokeStyle = "purple";
 	ctx.moveTo(landmarks[from].x, landmarks[from].y);
 	ctx.lineTo(landmarks[to].x, landmarks[to].y);
 	ctx.stroke();
