@@ -681,8 +681,8 @@ function travelOneDay(resting = false) {
 			}
 			else if(random > 5000) {
 				wagon.people[i].health = 'healthy';
-				bootbox.alert(wagon.people[i].name + " recovered from sickness.");
-				stop();
+				//bootbox.alert(wagon.people[i].name + " recovered from sickness.");
+				//stop();
 				//break;
 			}
 			else {} // still sick
