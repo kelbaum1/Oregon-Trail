@@ -77,7 +77,6 @@ $(document).ready(function(){
 
 	$("#btnRations").click(function(){
 		updateRations();
-		$("#rations").text(wagon.rations);
 	});
 
 	$("#btnBuy").click(function(){
@@ -106,7 +105,6 @@ $(document).ready(function(){
 
 	$("#btnPace").click(function(){
 		updatePace();
-		$("#pace").text(wagon.pace);
 	});
 
 	$("#btnPause").click(function(){
@@ -313,7 +311,10 @@ function updatePace() {
 			}
 		],
 		callback: function (result) {
-			if(result) wagon.pace = result;
+			if(result) {
+				wagon.pace = result;
+				$("#pace").text(wagon.pace);
+			}
 		}
 	});
 }
@@ -341,7 +342,10 @@ function updateRations() {
 			}
 		],
 		callback: function (result) {
-			if(result) wagon.rations = result;
+			if(result) {
+				wagon.rations = result;
+				$("#rations").text(wagon.rations);
+			}
 		}
 	});
 }
@@ -468,7 +472,7 @@ function travelOneDay(resting = false) {
 		if(crossRiver())
 			$("#logLabel").text("finished crossing: ");
 			$("#log").text(landmarks[wagon.landmarkIndex].name);
-
+			$("#btnContinue").text("Continue");
 		return;
 	}
 	if(!wagon.passedFork) {
@@ -690,6 +694,7 @@ function travelOneDay(resting = false) {
 		}
 		if(landmarks[wagon.landmarkIndex].river) {
 			wagon.finishedCrossing = false;
+			$("#btnContinue").text("Cross River");
 		}
 		if(landmarks[wagon.landmarkIndex].fork) {
 			wagon.passedFork = false;
