@@ -1,5 +1,3 @@
-Messing up wagon leader's name crashes the game
-Spending more than you have at the store crashes game
 Insert name and Insert tombstone buttons need to be removed before we turn in
 Wait to see if conditions improve doesn't use a day
 Resting needs to take time

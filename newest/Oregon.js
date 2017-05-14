@@ -1053,7 +1053,12 @@ class gameArea {
 function updateGameArea(myGameArea,landmarkIcon,wagonIcon,pace) {
 	myGameArea.clear();
 
-	landmarkIcon.update(1);
+	//to prevent the landmark from going inside the wagon
+	if(landmarkIcon.x < (wagonIcon.x-60))
+	{
+		console.log(landmarkIcon.x + " < " + wagonIcon.x);
+		landmarkIcon.update(1);
+	}
 	landmarkIcon.draw();
 
 	//setTimeout(100);
