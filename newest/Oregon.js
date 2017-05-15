@@ -61,13 +61,6 @@ $(document).ready(function(){
 			$("#p3").text(wagon.people[2].health);
 			$("#p4").text(wagon.people[3].health);
 			$("#p5").text(wagon.people[4].health);
-			
-			// Clear map from previous game
-			var canvas = document.getElementById("mapCanvas");
-			var ctx = canvas.getContext("2d");
-			ctx.clearRect(0, 0, canvas.width, canvas.height);
-			//$('#myCanvas').css("background-image", "url(pics/oregontrail-3.jpg)");
-			
 		}
 	});
 
