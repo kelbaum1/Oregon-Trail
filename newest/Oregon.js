@@ -384,6 +384,10 @@ function updateSupplies() {
 				bootbox.alert("You cannot buy so many oxen; the wagon can only support 10 oxen total.");
 				return false;
 			}
+			if(parseInt(oxen) + wagon.oxen == 0) {
+				bootbox.alert("You must have at least 1 oxen to move your wagon.");
+				return false;
+			}
 			if(parseInt(food) + wagon.food > 2000) {
 				bootbox.alert("You cannot buy that much food; the wagon can only hold 2000 pounds total.");
 				return false;
