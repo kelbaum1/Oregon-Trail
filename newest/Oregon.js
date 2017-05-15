@@ -46,8 +46,10 @@ $(document).ready(function(){
 			$("#weather").text(wagon.weather);
 			$("#logLabel").text("arrived at: ");
 			$("#log").text(landmarks[wagon.landmarkIndex].name);
+			$("#nextLandmarkLabel").text("");
+			$("#nextLandmark").text("");
 			$("#distanceToLandmark").text(wagon.nextLandmark + " miles");
-			//$("#people").text("people: " + wagon.people[0].name + " " + wagon.people[0].health + " "+ wagon.people[1].name + " " + wagon.people[1].health + " "+ wagon.people[2].name + " " + wagon.people[2].health + " "+ wagon.people[3].name + " " + wagon.people[3].health + " "+ wagon.people[4].name + " " + wagon.people[4].health);
+			
 			$("#p1Label").text(wagon.people[0].name + ":");
 			$("#p2Label").text(wagon.people[1].name + ":");
 			$("#p3Label").text(wagon.people[2].name + ":");
@@ -59,6 +61,13 @@ $(document).ready(function(){
 			$("#p3").text(wagon.people[2].health);
 			$("#p4").text(wagon.people[3].health);
 			$("#p5").text(wagon.people[4].health);
+			
+			// Clear map from previous game
+			var canvas = document.getElementById("mapCanvas");
+			var ctx = canvas.getContext("2d");
+			ctx.clearRect(0, 0, canvas.width, canvas.height);
+			//$('#myCanvas').css("background-image", "url(pics/oregontrail-3.jpg)");
+			
 		}
 	});
 
@@ -689,7 +698,7 @@ function travelOneDay(resting = false) {
 		}
 		else {} // dead
 	}
-	//$("#people").text("people: " + wagon.people[0].name + " " + wagon.people[0].health + " "+ wagon.people[1].name + " " + wagon.people[1].health + " "+ wagon.people[2].name + " " + wagon.people[2].health + " "+ wagon.people[3].name + " " + wagon.people[3].health + " "+ wagon.people[4].name + " " + wagon.people[4].health);
+	
 	$("#p1Label").text(wagon.people[0].name + ":");
 	$("#p2Label").text(wagon.people[1].name + ":");
 	$("#p3Label").text(wagon.people[2].name + ":");
@@ -974,6 +983,8 @@ function chooseFork(i1, i2) {
 				wagon.passedFork = true;
 			}
 			else {}
+			$("#nextLandmarkLabel").text("next stop: ");
+			$("#nextLandmark").text(landmarks[wagon.landmarkIndex + 1].name);
 		}
 	});
 }
