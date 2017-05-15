@@ -1,6 +1,4 @@
-Insert name and Insert tombstone buttons need to be removed before we turn in
-Wait to see if conditions improve doesn't use a day
 Resting needs to take time
 Green river image is a fort?  Is an issue with indexing, will fix.
 Random events other than sickness aren't happening
-
+HINTS!!

@@ -514,6 +514,15 @@ function travelOneDay(resting = false) {
 
 	// check for landmarks
 
+	if(wagon.landmarkIndex == landmarks.length - 1)
+		{
+			stop();
+			bootbox.alert("Congratulations, you made it to Oregon!\nScore: " + countPoints() + " points");
+			$("#log").text("Congratulations, you made it to Oregon!\nScore: " + wagon.points + " points");
+			$(".mainPage").hide();
+			$(".titlePage").show();
+			getScores();
+		}
 	if(!wagon.finishedCrossing) {
 		
 		if(crossRiver())
@@ -732,7 +741,10 @@ function travelOneDay(resting = false) {
 		$("#nextLandmarkLabel").text("next stop: ");
 		$("#nextLandmark").text(landmarks[wagon.landmarkIndex + 1].name);
 		
-		bootbox.alert("You've arrived at " + landmarks[wagon.landmarkIndex].name + "!");
+		if(landmarks[wagon.landmarkIndex].name != "The Dalles")
+		{
+			bootbox.alert("You've arrived at " + landmarks[wagon.landmarkIndex].name + "!");
+		}
 		
 		if(landmarks[wagon.landmarkIndex].fort) {
 			$("#btnBuy").prop("disabled",false);
@@ -752,13 +764,13 @@ function travelOneDay(resting = false) {
 /*************************************************/
 			return;
 		}
-		if(wagon.landmarkIndex == landmarks.length - 1)
+		/*if(wagon.landmarkIndex == landmarks.length - 1)
 		{
-			bootbox.alert("Congratulations, you made it to Oregon!\nScore: " + countPoints + " points");
+			bootbox.alert("Congratulations, you made it to Oregon!\nScore: " + countPoints() + " points");
 			$("#log").text("Congratulations, you made it to Oregon!\nScore: " + wagon.points + " points");
 			$(".mainPage").hide();
 			$(".titlePage").show();
-		}
+		}*/
 		wagon.nextLandmark = landmarks[wagon.landmarkIndex].mileMarker;
 		$("#distanceToLandmark").text(wagon.nextLandmark + " miles");
 
@@ -780,7 +792,7 @@ function countPoints() {
 	if (wagon.leaderType == 'carpenter') points *= 2;
 	else if (wagon.leaderType == 'farmer') points *= 3;
 	else {}
-	return Math.max(0, points);
+	return Math.max(0, Math.round(points));
 }
 
 function crossRiver() {
@@ -941,7 +953,7 @@ function playRiverCrossingGame() {
 	$(".mainPage").hide();
 	$(".titlePage").hide();
 	$(".endGame").show();
-	confirm("You have reached the Dulles River Crossing.  You will have to float your wagon and navigate using the arrow keys to avoid rocks!  Be careful, each rock you hit will cause you to lose supplies!");
+	confirm("You have reached the Dalles River Crossing.  You will have to float your wagon and navigate using the arrow keys to avoid rocks!  Be careful, each rock you hit will cause you to lose supplies!");
 	var endGameArea = new gameArea("endCanvas");
 	endGameArea.start();
 
@@ -1174,14 +1186,14 @@ function updateRiverCrossing(gameArea,riverWagon)
 	}
 	if(riverWagon.count == 10000)
 	{
-		confirm("Congrats, you made it to Oregon!");
 		gameArea.stop();
 		insertScore();
-		bootbox.alert("Congratulations, you made it to Oregon!\nScore: " + countPoints + " points");
+		
+		bootbox.alert("Congratulations you crossed the Dalles River and arrived in Oregon City! <br> Score: " + countPoints() + " points");
 		$("#log").text("Congratulations, you made it to Oregon!\nScore: " + wagon.points + " points");
 		$(".mainPage").hide();
 		$(".titlePage").show();
-			
+		getScores();			
 
 	}
 }
