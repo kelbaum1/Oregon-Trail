@@ -618,6 +618,7 @@ function travelOneDay(resting = false) {
 		/****************************************************************/
 		while(wagon.milesToday < pixelPace)
 		{
+			
 			if(landmarks[wagon.landmarkIndex+1].name == 'Chimney Rock' || landmarks[wagon.landmarkIndex+1].name == 'Independence Rock' || 
 			landmarks[wagon.landmarkIndex+1].name == 'South Pass' || landmarks[wagon.landmarkIndex+1].name == 'Soda Springs' || 
 			landmarks[wagon.landmarkIndex+1].name == 'Blue Mountains')
@@ -625,7 +626,7 @@ function travelOneDay(resting = false) {
 				setTimeout( function() { updateGameArea(myGameArea,landmarkIcon,wagonIcon,pixelPace);},500);	
 			}
 			else if(landmarks[wagon.landmarkIndex+1].name == 'Kansas River Crossing' || landmarks[wagon.landmarkIndex+1].name == 'Big Blue River Crossing' || 
-			landmarks[wagon.landmarkIndex+1].name ==  landmarks[wagon.landmarkIndex+1].name == 'Green River Crossing' || 
+			  landmarks[wagon.landmarkIndex+1].name == 'Green River Crossing' || 
 			landmarks[wagon.landmarkIndex+1].name == 'Snake River Crossing' || landmarks[wagon.landmarkIndex+1].name == 'The Dalles' || 
 			landmarks[wagon.landmarkIndex+1].name =='Columbia River')
 			{
@@ -686,7 +687,6 @@ function travelOneDay(resting = false) {
 		}
 		else if(wagon.people[i].health == 'sick') {
 			var random = getRandomInt(0, 1000*wagon.multiplier)
-			console.log(random);
 			if(random < 150) {
 				wagon.people[i].health = 'dead';
 				if(i == 0) {
@@ -1083,7 +1083,6 @@ function updateGameArea(myGameArea,landmarkIcon,wagonIcon,pace) {
 	//to prevent the landmark from going inside the wagon
 	if(landmarkIcon.x < (wagonIcon.x-60))
 	{
-		console.log(landmarkIcon.x + " < " + wagonIcon.x);
 		landmarkIcon.update(1);
 	}
 	landmarkIcon.draw();
@@ -1168,7 +1167,6 @@ function updateRiverCrossing(gameArea,riverWagon)
 			riverWagon.speedX = 0;
 		}
 	});
-	//console.log(riverWagon.count);
 	if(riverWagon.count%200 == 0)
 	{
 		var randomNum = Math.floor(Math.random() * 500);
