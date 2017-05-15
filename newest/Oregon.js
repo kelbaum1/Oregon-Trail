@@ -69,13 +69,17 @@ $(document).ready(function(){
 		$(".mainPage").show();
 	});
 	
-	$("#btnInsertTombstone").click(function() {
+	/*$("#btnInsertTombstone").click(function() {
 		insertTombstone();
+	});
+	
+	$("#btnTombstones").click(function () {
+		getTombstones();
 	});
 	
 	$("#btnInsertScore").click(function () {
 		insertScore();
-	});
+	});*/
 
 	$("#btnRations").click(function(){
 		updateRations();
@@ -119,10 +123,6 @@ $(document).ready(function(){
 	
 	$("#btnTopScores").click(function () {
 		getScores();
-	});
-
-	$("#btnTombstones").click(function () {
-		getTombstones();
 	});
 
 function updateStorePrices() {
@@ -177,7 +177,7 @@ function setupGame() {
 			return true;  
 		}  
 		else {  
-			alert('Please input alphanumeric characters only.');  
+			bootbox.alert('Please input alphanumeric characters only.');  
 			return false;  
 		}  
 	}
@@ -946,12 +946,13 @@ function playRiverCrossingGame() {
 	$(".mainPage").hide();
 	$(".titlePage").hide();
 	$(".endGame").show();
+	
 	confirm("You have reached the Dalles River Crossing.  You will have to float your wagon and navigate using the arrow keys to avoid rocks!  Be careful, each rock you hit will cause you to lose supplies!");
 	var endGameArea = new gameArea("endCanvas");
 	endGameArea.start();
-
-	var newWagon = new component(20,20,"brown",800,200,endGameArea);
-	var rock = new component(20,20,"grey",200,200,endGameArea);
+	
+	var newWagon = new component(50,50,"wagon2",800,200,endGameArea);
+	var rock = new component(40,40,"rock",200,200,endGameArea);
 	newWagon.speedX = 0;
 	
 	endGameArea.interval = setInterval(function() {updateRiverCrossing(endGameArea,newWagon),1000}); 
@@ -1134,7 +1135,7 @@ function updateRiverCrossing(gameArea,riverWagon)
 			}
 			confirm(newStr);
 	
-			riverWagon.x-=40;
+			riverWagon.x-=100;
 			//return;
 		} 
     }
@@ -1163,7 +1164,7 @@ function updateRiverCrossing(gameArea,riverWagon)
 	if(riverWagon.count%200 == 0)
 	{
 		var randomNum = Math.floor(Math.random() * 500);
-		rocks.push( new component(20,20,"grey",0,randomNum,gameArea));
+		rocks.push( new component(40,40,"rock",0,randomNum,gameArea));
 		
 	}
 
@@ -1226,6 +1227,20 @@ function component(width, height, name, x, y, myGameArea) {
 			var river = new Image();
 			river.src = "pics/river.jpg";
 			ctx.drawImage(river,this.x, this.y, this.width, this.height);
+		}
+		
+		else if(this.name == "rock")
+		{
+			var river = new Image();
+			river.src = "pics/rock.png";
+			ctx.drawImage(river,this.x, this.y, this.width, this.height);
+		}
+		
+		else if(this.name == "wagon2")
+		{
+			var landmark = new Image();
+			landmark.src = "pics/wagon2.png";
+			ctx.drawImage(landmark,this.x, this.y, this.width, this.height);
 		}
 		
 		else{
