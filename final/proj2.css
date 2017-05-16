@@ -1,3 +1,9 @@
+/*
+CMSC 433 Scripting Languages
+proj2.css
+Michael Kelbaugh, John Larson, Christopher Blake, Mansi Shah
+*/
+
 html,body
 {
 	height: 100%;
@@ -153,11 +159,6 @@ button
 	overflow: hidden;
 }
 
-/*body
-{
-	overflow: hidden; - stopped main page from scrolling.
-}*/
-
 #left1, #left4{
 	background: #FFDEAD;
 	width: 15%;
@@ -165,7 +166,6 @@ button
 	height: 100%;
 	display: inline;
 }
-
 
 #left1 button {
 	padding: 10%;
@@ -183,7 +183,6 @@ button
 	width: 150px;
 }
 
-
 #left4 button{
 	padding: 10%;
 	border-radius: 5%;
@@ -200,7 +199,6 @@ button
 	width: 150px;
 }
 
-
 #left1 button:hover {background-color: #F8F8FF}
 #left1 button:active{
 	background-color: #F8F8FF;
@@ -208,14 +206,12 @@ button
 	transform: translateY(4px);
 }
 
-
 #left4 button:hover {background-color: #F8F8FF}
 #left4 button:active{
 	background-color: #F8F8FF;
 	box-shadow: 0 5px #666;
 	transform: translateY(4px);
 }
-
 
 #left2{
 	width: 53%;
@@ -225,9 +221,6 @@ button
 	overflow:hidden;
 	display: table;
 }
-
-
-
 
 #mapCanvas
 {
@@ -347,14 +340,15 @@ table{
 	background-color:#0000FF;
 }
 
-/* item container */
+/* for the tooltips in the store page */
+/* Source: w3schools */
+/* https://www.w3schools.com/howto/howto_css_tooltip.asp */
 .item {
     position: relative;
     display: inline-block;
-    border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+    border-bottom: 1px dotted black;
 }
 
-/* item text */
 .item .itemtext {
     visibility: hidden;
     width: 200px;
@@ -363,20 +357,15 @@ table{
     text-align: center;
     padding: 5px 0;
     border-radius: 6px;
-
-    /* Position the item text */
     position: absolute;
     z-index: 1;
     bottom: 125%;
     left: 50%;
     margin-left: -60px;
-
-    /* Fade in item */
     opacity: 0;
     transition: opacity 1s;
 }
 
-/* item arrow */
 .item .itemtext::after {
     content: "";
     position: absolute;
@@ -388,7 +377,6 @@ table{
     border-color: #555 transparent transparent transparent;
 }
 
-/* Show the item text when you mouse over the item container */
 .item:hover .itemtext {
     visibility: visible;
     opacity: 1;

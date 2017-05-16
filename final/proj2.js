@@ -1,24 +1,49 @@
-// Oregon Trail
-// Oregon.js
-// Michael Kelbaugh
-
+// CMSC 433 Scripting Languages
+// proj2.js
+// Michael Kelbaugh, John Larson, Christopher Blake, Mansi Shah
+/* Code Organization:
+line 26 -- display the title page
+line 35 -- actions for the various buttons
+line 183 -- functions for the Store page
+line 319 -- function for the Setup page
+line 353 -- go fishing
+line 368 -- stop to rest
+line 386 -- trade
+line 451 -- update pace
+line 486 -- update rations
+line 521 -- database connectivity
+line 586 -- stop and start travel
+line 869 -- functions for crossing rivers
+line 1145 -- choose fork in the road
+line 1183 -- utilities: calculate score, display health message, Random
+line 1225 -- Canvas
+line 1274 -- constructors for objects like the Wagon, Landmark, Person, graphical component
+line 1450 -- declare global data types
+line 1494 -- start the game
+*/
 $(document).ready(function(){
 
+	// start the game by just showing the title page
 	$(".setupPage").hide();
 	$(".titlePage").show();
 	$(".storePage").hide();
 	$(".mainPage").hide();
 	$(".endGame").hide();
 	
+
+
+	// by default, clicking a button, stops the wagon
 	$("button").click(function(){
 		stop();
 	});
 
+	// clicking the button on the title page moves you on to the setup page
     $("#btnTitle").click(function(){
         $(".titlePage").hide();
 		$(".setupPage").show();
     });
 	
+	// clicking the button the setup page moves you on to the store page
 	$("#btnSetup").click(function() {
 		if (setupGame()) {
 			$(".setupPage").hide();
@@ -27,21 +52,21 @@ $(document).ready(function(){
 		}
 	});
 	
+	// clicking the button on the store page updates your supplies and returns you to the gameplay page
 	$("#btnStore").click(function() {
 		
 		if(updateSupplies()) {
+			// return to the main page
 			$(".storePage").hide();
 			$(".mainPage").show();
 
+			// update the display and status
 			$("#btnPause").prop("disabled",true);
 			displaySupplies();
-
 			$("#currentDate").text(monthName[wagon.date.getMonth()] + " " + wagon.date.getDate() + ", " + wagon.date.getFullYear());
 			$("#rations").text(wagon.rations);
 			$("#pace").text(wagon.pace);
-			/***************************************************/
 			var healthStr = setHealthStr();
-			//$("#health").text(wagon.health);
 			$("#health").text(healthStr);
 			$("#weather").text(wagon.weather);
 			$("#logLabel").text("arrived at: ");
@@ -50,12 +75,12 @@ $(document).ready(function(){
 			$("#nextLandmark").text("");
 			$("#distanceToLandmark").text(wagon.nextLandmark + " miles");
 			
+			// display the health of the wagon party
 			$("#p1Label").text(wagon.people[0].name + ":");
 			$("#p2Label").text(wagon.people[1].name + ":");
 			$("#p3Label").text(wagon.people[2].name + ":");
 			$("#p4Label").text(wagon.people[3].name + ":");
 			$("#p5Label").text(wagon.people[4].name + ":");
-			
 			$("#p1").text(wagon.people[0].health);
 			$("#p2").text(wagon.people[1].health);
 			$("#p3").text(wagon.people[2].health);
@@ -64,12 +89,14 @@ $(document).ready(function(){
 		}
 	});
 
+	// leave the store without buying anything
 	$("#btnCancel").click(function() {
 		$(".storePage").hide();
 		$(".mainPage").show();
 	});
 	
-	/*$("#btnInsertTombstone").click(function() {
+	/* for debugging the PHP connectivity
+	$("#btnInsertTombstone").click(function() {
 		insertTombstone();
 	});
 	
@@ -79,12 +106,10 @@ $(document).ready(function(){
 	
 	$("#btnInsertScore").click(function () {
 		insertScore();
-	});*/
-
-	$("#btnRations").click(function(){
-		updateRations();
 	});
+	*/
 
+	// visit the general store, if you're stopped at a fort
 	$("#btnBuy").click(function(){
 		if(wagon.atFort) {
 			$(".mainPage").hide();
@@ -96,10 +121,12 @@ $(document).ready(function(){
 		}
 	});
 
+	// attempt to trade
 	$("#btnTrade").click(function(){
 		makeTrade();
 	});
 
+	// talk with people, if you're stopped at a fort
 	$("#btnTalk").click(function(){		
 		if(wagon.atFort) {
 			bootbox.alert("" + speech[getRandomInt(0, speech.length - 1)]);
@@ -109,10 +136,17 @@ $(document).ready(function(){
 		}
 	});
 
+	// view the top 10 scores
+	$("#btnTopScores").click(function () {
+		getScores();
+	});
+
+	// stop to rest
 	$("#btnRest").click(function(){		
 		takeRest();
 	});
-		
+	
+	// go fishing and get lucky
 	$("#btnFish").click(function(){
 		if(!wagon.atFort) {
 			goFishing();
@@ -124,22 +158,30 @@ $(document).ready(function(){
 		}
 	});
 
+	// change your pace
 	$("#btnPace").click(function(){
 		updatePace();
 	});
 
+	// change the rations
+	$("#btnRations").click(function(){
+		updateRations();
+	});
+
+	// pause the game
 	$("#btnPause").click(function(){
 		stop();
 	});
 
+	// continue traveling. you'll click this button a lot.
 	$("#btnContinue").click(function(){
 		startTravel();
 	});
-	
-	$("#btnTopScores").click(function () {
-		getScores();
-	});
 
+
+
+/* the store page */
+// call this function when you visit the store to update the prices
 function updateStorePrices() {
 
 	document.getElementById("buyOxen").value = 0;
@@ -182,6 +224,7 @@ function updateStorePrices() {
 	$("#numTongue").text("You currently have " + wagon.tongues);
 }
 
+// update the supplies of the wagon
 function displaySupplies() {
 	$("#food").text(wagon.food + " lbs");
 	$("#wheels").text(wagon.wheels);
@@ -192,191 +235,7 @@ function displaySupplies() {
 	$("#bait").text(wagon.bait);
 }
 
-function setupGame() {
-	function alphanumeric(text)  
-	{   
-		var letters = /^[0-9a-zA-Z]+$/;  
-		if(text.match(letters)) {
-			return true;  
-		}  
-		else {  
-			bootbox.alert('Please input alphanumeric characters only.');  
-			return false;  
-		}  
-	}
-	
-	var leaderType = document.querySelector('input[name = "occupation"]:checked').value;
-	var people = [ document.getElementById("leaderName").value,
-				document.getElementById("person1").value, 
-				document.getElementById("person2").value,
-				document.getElementById("person3").value,
-				document.getElementById("person4").value ];
-	for(var i = 0; i < people.length; i++) {
-		if(!alphanumeric(people[i])) {
-			return false;
-		}
-	}
-	
-	var month = document.getElementById("month").value;
-	wagon = new Wagon(month, leaderType, people);
-	
-	return true;
-}
-
-function goFishing() {
-	if(wagon.bait > 0) {
-		wagon.bait--;
-		var fish = getRandomInt(0, 20);
-		bootbox.alert("You caught " + fish + " fish.  For a total of " + fish*10 + " pounds of food");
-		wagon.food += fish*10;
-	}
-	else {
-		bootbox.alert("You have no fishing bait left!");
-	}
-}
-
-function takeRest() {
-	var maxRest = 9;
-	bootbox.prompt({
-		title: "How many days do you want to rest? The maximum is " + maxRest + " days.",
-		inputType: 'number',
-		callback: function (result) {
-			for(var i = 0; i < result && i < maxRest; i++) {
-				travelOneDay(true);
-			}
-			var healthStr = setHealthStr();
-			$("#health").text(healthStr);
-		}
-	});
-}
-
-function makeTrade() {
-	// get random trade deal
-	var supplies = ['oxen', 'food', 'clothing', 'bait', 'wheels', 'axles', 'tongues'];
-	var buy = supplies[getRandomInt(0, supplies.length - 1)];
-	supplies.splice(supplies.indexOf(buy), 1);
-	var sell = supplies[getRandomInt(0, supplies.length - 1)];
-
-	var buyQuantity = 0;
-	if(buy == 'food') {
-		buyQuantity = getRandomInt(20, 100);
-	}
-	else if(buy == 'bait') {
-		buyQuantity = getRandomInt(2, 5);
-	}
-	else {
-		buyQuantity = getRandomInt(1, 2);
-	}
-
-	var sellQuantity = 0;
-	if(sell == 'food') {
-		sellQuantity = getRandomInt(20, 100);
-	}
-	else if(sell == 'bait') {
-		sellQuantity = getRandomInt(2, 5);
-	}
-	else {
-		sellQuantity = getRandomInt(1, 2);
-	}
-
-	if(sellQuantity > eval("wagon." + sell)) {
-		bootbox.alert("A traveler will give you " + buyQuantity + " " + buy + " in exchange for " + sellQuantity + " " + sell + ". You don't have this.");
-	}
-	else {
-		bootbox.confirm({
-			message: "A traveler will give you " + buyQuantity + " " + buy + " in exchange for " + sellQuantity + " " + sell + ". Do you want to make the trade?",
-			buttons: {
-				confirm: {
-					label: 'Yes',
-					value: 1,
-					className: 'btn-success'
-				},
-				cancel: {
-					label: 'No',
-					value: 0,
-					className: 'btn-danger'
-				}
-			},
-			callback: function (result) {
-				if(result) {
-					// make the trade, update the wagon supplies and money
-					var buyCommand = "wagon." + buy + " += " + buyQuantity;
-					var sellCommand = "wagon." + sell + " -= " + sellQuantity;
-					eval(buyCommand);
-					eval(sellCommand);
-					displaySupplies();
-				}
-			}
-		});
-	}
-
-	travelOneDay(true);
-}
-
-function updatePace() {
-	bootbox.prompt({
-		title: "Select your pace:",
-		message: "A steady pace is best for your health, but is slow. You'll move much faster at a grueling pace, but your health will suffer.",
-		inputType: 'select',
-		inputOptions: [
-			{
-				text: 'Choose one...',
-				value: '',
-			},
-			{
-				text: 'Steady - a slow pace, but good for your health',
-				value: 'steady',
-			},
-			{
-				text: 'Strenuous - a moderately fast pace',
-				value: 'strenuous',
-			},
-			{
-				text: 'Grueling - a very fast pace, but bad for your health',
-				value: 'grueling',
-			}
-		],
-		callback: function (result) {
-			if(result) {
-				wagon.pace = result;
-				$("#pace").text(wagon.pace);
-			}
-		}
-	});
-}
-
-function updateRations() {
-	bootbox.prompt({
-		title: "Select the level of rations:",
-		message: "Filling rations are best for your health, but you'll run out of food more quickly. Bare Bones rations will preserve your food supply for longer, but your health will suffer.",
-		inputType: 'select',
-		inputOptions: [
-			{
-				text: 'Choose one...',
-				value: '',
-			},
-			{
-				text: 'Filling - good for your health, but will deplete your food supply quickly',
-				value: 'filling',
-			},
-			{
-				text: 'Meager - a small ration, but adequate for your health',
-				value: 'meager',
-			},
-			{
-				text: 'Bare Bones - bad for your health, but will conserve your food supply',
-				value: 'bare bones',
-			}
-		],
-		callback: function (result) {
-			if(result) {
-				wagon.rations = result;
-				$("#rations").text(wagon.rations);
-			}
-		}
-	});
-}
-
+// read user input from the store page
 function updateSupplies() {
 	var cost = 0;
 	var budget = wagon.money;
@@ -453,24 +312,213 @@ function updateSupplies() {
 
 	return supplies;
 }
+/* end of the the store page */
 
 
-function stop() {
-	$("#wagonStatus").text("stopped");
-	$("#btnPause").prop("disabled",true);
-	clearInterval(loop);
+
+// read the user input on the setup page
+function setupGame() {
+	function alphanumeric(text)  
+	{   
+		var letters = /^[0-9a-zA-Z]+$/;  
+		if(text.match(letters)) {
+			return true;  
+		}  
+		else {  
+			bootbox.alert('Please input alphanumeric characters only.');  
+			return false;  
+		}  
+	}
+	
+	var leaderType = document.querySelector('input[name = "occupation"]:checked').value;
+	var people = [ document.getElementById("leaderName").value,
+				document.getElementById("person1").value, 
+				document.getElementById("person2").value,
+				document.getElementById("person3").value,
+				document.getElementById("person4").value ];
+	for(var i = 0; i < people.length; i++) {
+		if(!alphanumeric(people[i])) {
+			return false;
+		}
+	}
+	
+	var month = document.getElementById("month").value;
+	wagon = new Wagon(month, leaderType, people);
+	
+	return true;
 }
 
-function startTravel() {
-	$("#btnPause").prop("disabled",false);
-	//$("#btnBuy").prop("disabled",true);
-	//$("#btnTalk").prop("disabled",true);
-	//$("#btnFish").prop("disabled",false);
-	wagon.atFort = false;
-	$("#wagonStatus").text("moving");
-	loop = setInterval(travelOneDay, 1000);
+
+
+// go fishing and hope to get lucky
+function goFishing() {
+	if(wagon.bait > 0) {
+		wagon.bait--;
+		var fish = getRandomInt(0, 20);
+		bootbox.alert("You caught " + fish + " fish.  For a total of " + fish*10 + " pounds of food");
+		wagon.food += fish*10;
+	}
+	else {
+		bootbox.alert("You have no fishing bait left!");
+	}
 }
 
+
+
+// stop to rest
+function takeRest() {
+	var maxRest = 9;
+	bootbox.prompt({
+		title: "How many days do you want to rest? The maximum is " + maxRest + " days.",
+		inputType: 'number',
+		callback: function (result) {
+			for(var i = 0; i < result && i < maxRest; i++) {
+				travelOneDay(true);
+			}
+			var healthStr = setHealthStr();
+			$("#health").text(healthStr);
+		}
+	});
+}
+
+
+
+// attempt a random trade deal
+function makeTrade() {
+	var supplies = ['oxen', 'food', 'clothing', 'bait', 'wheels', 'axles', 'tongues'];
+	var buy = supplies[getRandomInt(0, supplies.length - 1)];
+	supplies.splice(supplies.indexOf(buy), 1);
+	var sell = supplies[getRandomInt(0, supplies.length - 1)];
+
+	var buyQuantity = 0;
+	if(buy == 'food') {
+		buyQuantity = getRandomInt(20, 100);
+	}
+	else if(buy == 'bait') {
+		buyQuantity = getRandomInt(2, 5);
+	}
+	else {
+		buyQuantity = getRandomInt(1, 2);
+	}
+
+	var sellQuantity = 0;
+	if(sell == 'food') {
+		sellQuantity = getRandomInt(20, 100);
+	}
+	else if(sell == 'bait') {
+		sellQuantity = getRandomInt(2, 5);
+	}
+	else {
+		sellQuantity = getRandomInt(1, 2);
+	}
+
+	if(sellQuantity > eval("wagon." + sell)) {
+		bootbox.alert("A traveler will give you " + buyQuantity + " " + buy + " in exchange for " + sellQuantity + " " + sell + ". You don't have this.");
+	}
+	else {
+		bootbox.confirm({
+			message: "A traveler will give you " + buyQuantity + " " + buy + " in exchange for " + sellQuantity + " " + sell + ". Do you want to make the trade?",
+			buttons: {
+				confirm: {
+					label: 'Yes',
+					value: 1,
+					className: 'btn-success'
+				},
+				cancel: {
+					label: 'No',
+					value: 0,
+					className: 'btn-danger'
+				}
+			},
+			callback: function (result) {
+				if(result) {
+					// make the trade, update the wagon supplies and money
+					var buyCommand = "wagon." + buy + " += " + buyQuantity;
+					var sellCommand = "wagon." + sell + " -= " + sellQuantity;
+					eval(buyCommand);
+					eval(sellCommand);
+					displaySupplies();
+				}
+			}
+		});
+	}
+
+	travelOneDay(true);
+}
+
+
+
+// change the pace of the wagon party
+function updatePace() {
+	bootbox.prompt({
+		title: "Select your pace:",
+		message: "A steady pace is best for your health, but is slow. You'll move much faster at a grueling pace, but your health will suffer.",
+		inputType: 'select',
+		inputOptions: [
+			{
+				text: 'Choose one...',
+				value: '',
+			},
+			{
+				text: 'Steady - a slow pace, but good for your health',
+				value: 'steady',
+			},
+			{
+				text: 'Strenuous - a moderately fast pace',
+				value: 'strenuous',
+			},
+			{
+				text: 'Grueling - a very fast pace, but bad for your health',
+				value: 'grueling',
+			}
+		],
+		callback: function (result) {
+			if(result) {
+				wagon.pace = result;
+				$("#pace").text(wagon.pace);
+			}
+		}
+	});
+}
+
+
+
+// change the rations of the wagon party
+function updateRations() {
+	bootbox.prompt({
+		title: "Select the level of rations:",
+		message: "Filling rations are best for your health, but you'll run out of food more quickly. Bare Bones rations will preserve your food supply for longer, but your health will suffer.",
+		inputType: 'select',
+		inputOptions: [
+			{
+				text: 'Choose one...',
+				value: '',
+			},
+			{
+				text: 'Filling - good for your health, but will deplete your food supply quickly',
+				value: 'filling',
+			},
+			{
+				text: 'Meager - a small ration, but adequate for your health',
+				value: 'meager',
+			},
+			{
+				text: 'Bare Bones - bad for your health, but will conserve your food supply',
+				value: 'bare bones',
+			}
+		],
+		callback: function (result) {
+			if(result) {
+				wagon.rations = result;
+				$("#rations").text(wagon.rations);
+			}
+		}
+	});
+}
+
+
+
+// download the tombstones data from the database
 function getTombstones() {
 	xmlhttp = new XMLHttpRequest();
 	xmlhttp.onreadystatechange = function() {
@@ -480,14 +528,9 @@ function getTombstones() {
 	};
 	xmlhttp.open("GET", "https://swe.umbc.edu/~kelbaum1/Oregon/proj2.php?arg=" + "getTombstones", true);
 	xmlhttp.send();
-
-	/*
-	$.ajax({url: "demo_test.txt", success: function(result){
-        $("#div1").text(result);
-    }});
-    */
 }
 
+// if you die, insert a tombstone into the database
 function insertTombstone() {
 	bootbox.prompt({
 		title: "Sadly, your entire party died on the trip to Oregon.<br>Write a message for your tombstone:",
@@ -502,6 +545,7 @@ function insertTombstone() {
 	});
 }
 
+// view the top 10 scores from the game
 function getScores() {
 	xmlhttp = new XMLHttpRequest();
 	xmlhttp.onreadystatechange = function() {
@@ -530,18 +574,38 @@ function getScores() {
 	xmlhttp.send();
 }
 
+// if you win, insert your score into the database
 function insertScore(newRating = 'Greenhorn') {
 	xmlhttp = new XMLHttpRequest();
 	xmlhttp.open("GET", "https://swe.umbc.edu/~kelbaum1/Oregon/proj2.php?arg=" + "insertScore" + "&usr=" + wagon.people[0].name + "&points=" + wagon.points + "&rating=" + newRating, true);
 	xmlhttp.send();
 }
 
+
+
+// stop traveling
+function stop() {
+	$("#wagonStatus").text("stopped");
+	$("#btnPause").prop("disabled",true);
+	clearInterval(loop);
+}
+
+// start traveling
+function startTravel() {
+	$("#btnPause").prop("disabled",false);
+	//$("#btnBuy").prop("disabled",true);
+	//$("#btnTalk").prop("disabled",true);
+	//$("#btnFish").prop("disabled",false);
+	wagon.atFort = false;
+	$("#wagonStatus").text("moving");
+	loop = setInterval(travelOneDay, 1000);
+}
+
+// move the wagon forward one day
 function travelOneDay(resting = false) {
 
-	// check for landmarks
-
-	if(wagon.landmarkIndex == landmarks.length - 1)
-		{
+	/* check for landmarks */
+	if(wagon.landmarkIndex == landmarks.length - 1) {
 			stop();
 
 			wagon.points = countPoints();
@@ -569,7 +633,6 @@ function travelOneDay(resting = false) {
 		chooseFork(wagon.landmarkIndex + 1, wagon.landmarkIndex + 2);
 		return;
 	}
-	/**********************************************************************/
 	if(wagon.atLandmark)
 	{
 		landmarkIcon.x = 15;
@@ -577,17 +640,17 @@ function travelOneDay(resting = false) {
 		riverIcon.x = 15;
 	}
 	wagon.atLandmark = false;
-
 	$("#logLabel").text("last left: ");
 	$("#log").text(landmarks[wagon.landmarkIndex].name);
 	$("#nextLandmarkLabel").text("next stop: ");
 	$("#nextLandmark").text(landmarks[wagon.landmarkIndex + 1].name);
+	/*******************************************************************/
 
 	// increment the date
 	wagon.date.setDate(wagon.date.getDate() + 1);
 	$("#currentDate").text(monthName[wagon.date.getMonth()] + " " + wagon.date.getDate() + ", " + wagon.date.getFullYear());
 	
-	// update food
+	// eat your food
 	var rations = 0;
 	if(wagon.rations == 'filling') rations = 3;
 	else if(wagon.rations == 'meager') rations = 2;
@@ -603,8 +666,9 @@ function travelOneDay(resting = false) {
 	else if(wagon.rations == 'bare bones') wagon.health -=10;
 	else {}
 	$("#food").text(wagon.food + " lbs");
+	/*****************************************************/
 	
-	// update weather
+	// update the weather
 	if(getRandomInt(0, 1000) < 200) {
 		wagon.weather = weather[getRandomInt(0, weather.length - 1)];
 		$("#weather").text(wagon.weather);
@@ -613,6 +677,7 @@ function travelOneDay(resting = false) {
 	else if(wagon.weather == 'hot') wagon.health -= 10;
 	else if(wagon.weather == 'snow') wagon.health -= 10;
 	else {}
+	/****************************************************/
 
 	// update health based on clothing
 	var avg = wagon.clothing / wagon.people.length;
@@ -622,8 +687,9 @@ function travelOneDay(resting = false) {
 	else if(avg >= 1) ;
 	else if(avg >= 0) wagon.health -= 2;
 	else wagon.health -= 5;
+	/****************************************************/
 
-	// rest
+	// rest, or travel forward
 	if(resting) {
 		wagon.health += 25;
 		return;
@@ -649,9 +715,7 @@ function travelOneDay(resting = false) {
 		
 		var pixelPace = pace * (500 / landmarks[wagon.landmarkIndex].mileMarker);
 		var flag = true;
-		/****************************************************************/
-		while(wagon.milesToday < pixelPace)
-		{
+		while(wagon.milesToday < pixelPace) {
 			
 			if(landmarks[wagon.landmarkIndex+1].name == 'Chimney Rock' || landmarks[wagon.landmarkIndex+1].name == 'Independence Rock' || 
 			landmarks[wagon.landmarkIndex+1].name == 'South Pass' || landmarks[wagon.landmarkIndex+1].name == 'Soda Springs' || 
@@ -686,19 +750,20 @@ function travelOneDay(resting = false) {
 			stop();
 		}
 
+		// check again if you've hit a landmark
 		if(pace > wagon.nextLandmark) {
 			pace = wagon.nextLandmark;
 			wagon.atLandmark = true;
 		}
-
 		wagon.nextLandmark -= pace;
 		$("#distanceToLandmark").text(wagon.nextLandmark + " miles");
 		wagon.milesTraveled += pace;
 		$("#distanceTraveled").text(wagon.milesTraveled + " miles");
 	}
+	/****************************************************/
 
+	// update the health
 	if(wagon.health < 0) wagon.health = 0;
-	/***********************************************/
 	var healthStr = setHealthStr();
 	$("#health").text(healthStr);
 	if(wagon.health >= 1000) wagon.multiplier = 10;
@@ -746,27 +811,22 @@ function travelOneDay(resting = false) {
 		else {} // dead
 	}
 	
+	// display the health of the wagon party
 	$("#p1Label").text(wagon.people[0].name + ":");
 	$("#p2Label").text(wagon.people[1].name + ":");
 	$("#p3Label").text(wagon.people[2].name + ":");
 	$("#p4Label").text(wagon.people[3].name + ":");
 	$("#p5Label").text(wagon.people[4].name + ":");
-	
 	$("#p1").text(wagon.people[0].health);
 	$("#p2").text(wagon.people[1].health);
 	$("#p3").text(wagon.people[2].health);
 	$("#p4").text(wagon.people[3].health);
 	$("#p5").text(wagon.people[4].health);
-	// get random events, both good and bad
 	
-	// animate the wagon
-	
-	// update the map
-	
+	// check if you're at a landmark, to set up the next day's travel options
 	if(wagon.atLandmark) {
 		stop();
 		// display new graphic
-		
 		drawRouteToCurPos(wagon.landmarkIndex, wagon.landmarkIndex + 1);
 		wagon.landmarkIndex++;
 		
@@ -796,40 +856,17 @@ function travelOneDay(resting = false) {
 		// you've reached the end of the trail
 		if(landmarks[wagon.landmarkIndex].name == 'The Dalles') {
 			var success = playRiverCrossingGame();
-/*************************************************/
 			return;
 		}
-		/*if(wagon.landmarkIndex == landmarks.length - 1)
-		{
-			bootbox.alert("Congratulations, you made it to Oregon!\nScore: " + countPoints() + " points");
-			$("#log").text("Congratulations, you made it to Oregon!\nScore: " + wagon.points + " points");
-			$(".mainPage").hide();
-			$(".titlePage").show();
-		}*/
 		wagon.nextLandmark = landmarks[wagon.landmarkIndex].mileMarker;
 		$("#distanceToLandmark").text(wagon.nextLandmark + " miles");
 
 	}
 }
 
-function countPoints() {
-	var points = 0;
-	points += wagon.health/2 * wagon.people.length;
-	points += 50; // for bringing the wagon
-	points += 4 * wagon.oxen;
-	points += 2 * wagon.wheels;
-	points += 2 * wagon.axles;
-	points += 2 * wagon.tongues;
-	points += 2 * wagon.clothing;
-	points += 1 * wagon.bait;
-	points += 0.04 * wagon.food;
-	points += 0.2 * wagon.money;
-	if (wagon.leaderType == 'carpenter') points *= 2;
-	else if (wagon.leaderType == 'farmer') points *= 3;
-	else {}
-	return Math.max(0, Math.round(points));
-}
 
+
+// cross a normal river (not the one at the end of the trail)
 function crossRiver() {
 	stop();
 	var weight = 1000 + wagon.oxen*1000 + wagon.clothing*5 + wagon.bait*1 + wagon.wheels*75 + wagon.axles*75 + wagon.tongues*75 + wagon.food*1 + wagon.people.length*130;
@@ -839,7 +876,6 @@ function crossRiver() {
 	if(wagon.weather == 'snowy') danger *= 1.3;
 	if(wagon.weather == 'rainy') danger *= 1.2;
 
-/************************************************/
 	function loseRandomSupplies() {
 		var newStr = "You lost some supplies while crossing: \n";
 		var oxen = getRandomInt(-5, Math.min(2, wagon.oxen));
@@ -969,22 +1005,7 @@ function crossRiver() {
 		});
 }
 
-/***************************************/
-function setHealthStr() {
-
-			if(wagon.health >= 1000)
-				return health[0];
-			else if(wagon.health >= 750)
-				return health[1];
-			else if(wagon.health >= 300)
-				return health[2];
-			else if(wagon.health >= 150)
-				return health[3];
-			else
-				return "Death's Door";
-
-}
-
+// the game to cross the final river at the end of the Oregon Trail
 function playRiverCrossingGame() {
 
 	$(".setupPage").hide();
@@ -1003,141 +1024,17 @@ function playRiverCrossingGame() {
 	
 	endGameArea.interval = setInterval(function() {updateRiverCrossing(endGameArea,newWagon),1000}); 
 	
-
 	//bootbox.alert("Congrats, you crossed the final river! That was easy.");
 	//$(".mainPage").show();
 	//$(".endGame").hide();
 	return true;
 }
 
-function chooseFork(i1, i2) {
-	stop();
-	bootbox.prompt({
-		title: "There's a fork in the road:",
-		inputType: 'select',
-		inputOptions: [
-			{
-				text: 'Which path do you want to take?',
-				value: '',
-			},
-			{
-				text: 'head to ' + landmarks[i1].name,
-				value: i1,
-			},
-			{
-				text: 'head to ' + landmarks[i2].name,
-				value: i2,
-			}
-		],
-		callback: function (result) {
-			if(result == i1) {
-				landmarks.splice(i2, 1);
-				wagon.passedFork = true;
-			}
-			else if(result == i2) {
-				landmarks.splice(i1, 1);
-				wagon.passedFork = true;
-			}
-			else {}
-			$("#nextLandmarkLabel").text("next stop: ");
-			$("#nextLandmark").text(landmarks[wagon.landmarkIndex + 1].name);
-		}
-	});
-}
-
-function Wagon(month, leaderType, names) {
-	
-	this.date = new Date(1848, month, 0);
-	this.leaderType = leaderType;
-	this.people = [];
-	for(var i = 0; i < names.length; i++) {
-		this.people.push(new Person(names[i]))
-	}
-	
-	this.weather = 'fair';
-	
-	// supplies
-	this.oxen = 0;
-	this.clothing = 0;
-	this.food = 0;
-	this.bait = 0;
-	this.wheels = 0;
-	this.axles = 0;
-	this.tongues = 0;
-	this.money = 0;
-	if(leaderType == 'banker') this.money = 1600;
-	if(leaderType == 'carpenter') this.money = 800;
-	if(leaderType == 'farmer') this.money = 400;
-	
-	this.health = 1000; // max = 1250, min 0
-	this.pace = 'steady';
-	this.rations = 'filling';
-	this.multiplier = 1.5; // health multiplier
-	this.points = 0;
-	
-	this.milesTraveled = 0;
-	this.nextLandmark = landmarks[0].mileMarker;
-	this.landmarkIndex = 0;
-	this.atLandmark = true;
-	this.finishedCrossing = true;
-	this.passedFork = true;
-	this.atFort = true;
-};
-
-function Landmark(name, x, y, distToNextLandmark, fort = false, river = false, fork = false) {
-	this.name = name;
-	this.mileMarker = distToNextLandmark;
-	this.x = x;
-	this.y = y;
-	this.fort = fort;
-	this.river = river;
-	this.fork = fork;
-};
-
-function Person(name, health = 'healthy') {
-	this.name = name;
-	this.health = health;
-}
-
-class gameArea {
-	
-	constructor (canvasName){
-		this.canvas = document.getElementById(canvasName);
-
-	}
-	start(){
-	//clearrect on this.context
-		this.context = this.canvas.getContext("2d");
-	}
-	clear(){
-		this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-	}
-	
-	stop(){
-		clearInterval(this.interval);
-	}
-}
-
-function updateGameArea(myGameArea,landmarkIcon,wagonIcon,pace) {
-	myGameArea.clear();
-
-	//to prevent the landmark from going inside the wagon
-	if(landmarkIcon.x < (wagonIcon.x-60))
-	{
-		landmarkIcon.update(1);
-	}
-	landmarkIcon.draw();
-
-	//setTimeout(100);
-	wagonIcon.draw();
-}
-
-function updateRiverCrossing(gameArea,riverWagon)
-{
-
+// update supplies after a river crossing
+function updateRiverCrossing(gameArea,riverWagon) {
 	for (i = 0; i < rocks.length; i += 1) {
 		if (riverWagon.crashWith(rocks[i])) {
-			var newStr = "You lost some supplies while crossing: \n";
+			var newStr = "You may have lost some supplies while crossing: \n";
 			var oxen = getRandomInt(-5, Math.min(2, wagon.oxen));
 			if(oxen > 0 && wagon.oxen > 2)
 			{
@@ -1243,6 +1140,195 @@ function updateRiverCrossing(gameArea,riverWagon)
 	}
 }
 
+
+
+// at a fork in the road, choose your next destination
+function chooseFork(i1, i2) {
+	stop();
+	bootbox.prompt({
+		title: "There's a fork in the road:",
+		inputType: 'select',
+		inputOptions: [
+			{
+				text: 'Which path do you want to take?',
+				value: '',
+			},
+			{
+				text: 'head to ' + landmarks[i1].name,
+				value: i1,
+			},
+			{
+				text: 'head to ' + landmarks[i2].name,
+				value: i2,
+			}
+		],
+		callback: function (result) {
+			if(result == i1) {
+				landmarks.splice(i2, 1);
+				wagon.passedFork = true;
+			}
+			else if(result == i2) {
+				landmarks.splice(i1, 1);
+				wagon.passedFork = true;
+			}
+			else {}
+			$("#nextLandmarkLabel").text("next stop: ");
+			$("#nextLandmark").text(landmarks[wagon.landmarkIndex + 1].name);
+		}
+	});
+}
+
+
+
+// return the string message of the wagon party's health
+function setHealthStr() {
+	if(wagon.health >= 1000)
+		return health[0];
+	else if(wagon.health >= 750)
+		return health[1];
+	else if(wagon.health >= 300)
+		return health[2];
+	else if(wagon.health >= 150)
+		return health[3];
+	else
+		return "Death's Door";
+}
+
+
+// total up your points at the end of the game
+function countPoints() {
+	var points = 0;
+	points += wagon.health/2 * wagon.people.length;
+	points += 50; // for bringing the wagon
+	points += 4 * wagon.oxen;
+	points += 2 * wagon.wheels;
+	points += 2 * wagon.axles;
+	points += 2 * wagon.tongues;
+	points += 2 * wagon.clothing;
+	points += 1 * wagon.bait;
+	points += 0.04 * wagon.food;
+	points += 0.2 * wagon.money;
+	if (wagon.leaderType == 'carpenter') points *= 2;
+	else if (wagon.leaderType == 'farmer') points *= 3;
+	else {}
+	return Math.max(0, Math.round(points));
+}
+
+// returns a random integer between min and max, inclusive
+// source: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
+function getRandomInt(min, max) {
+	return min + Math.floor(Math.random() * (max - min + 1));
+}
+
+
+
+// constructor for graphics and animation canvas
+class gameArea {
+	
+	constructor (canvasName){
+		this.canvas = document.getElementById(canvasName);
+
+	}
+	start(){
+	//clearrect on this.context
+		this.context = this.canvas.getContext("2d");
+	}
+	clear(){
+		this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+	}
+	
+	stop(){
+		clearInterval(this.interval);
+	}
+}
+
+// update the wagon animation
+function updateGameArea(myGameArea,landmarkIcon,wagonIcon,pace) {
+	myGameArea.clear();
+
+	//to prevent the landmark from going inside the wagon
+	if(landmarkIcon.x < (wagonIcon.x-60))
+	{
+		landmarkIcon.update(1);
+	}
+	landmarkIcon.draw();
+
+	//setTimeout(100);
+	wagonIcon.draw();
+}
+
+// draw your route on the map
+function drawRouteToCurPos(from, to) {
+	var canvas = document.getElementById("mapCanvas");
+	var ctx = canvas.getContext("2d");
+
+	ctx.beginPath();
+	ctx.lineWidth = 3;
+	ctx.strokeStyle = "purple";
+	ctx.moveTo(landmarks[from].x, landmarks[from].y);
+	ctx.lineTo(landmarks[to].x, landmarks[to].y);
+	ctx.stroke();
+};
+
+
+// constructor for the Wagon
+function Wagon(month, leaderType, names) {
+	
+	this.date = new Date(1848, month, 0);
+	this.leaderType = leaderType;
+	this.people = [];
+	for(var i = 0; i < names.length; i++) {
+		this.people.push(new Person(names[i]))
+	}
+	
+	this.weather = 'fair';
+	
+	// supplies
+	this.oxen = 0;
+	this.clothing = 0;
+	this.food = 0;
+	this.bait = 0;
+	this.wheels = 0;
+	this.axles = 0;
+	this.tongues = 0;
+	this.money = 0;
+	if(leaderType == 'banker') this.money = 1600;
+	if(leaderType == 'carpenter') this.money = 800;
+	if(leaderType == 'farmer') this.money = 400;
+	
+	this.health = 1000; // max = 1250, min 0
+	this.pace = 'steady';
+	this.rations = 'filling';
+	this.multiplier = 1.5; // health multiplier
+	this.points = 0;
+	
+	this.milesTraveled = 0;
+	this.nextLandmark = landmarks[0].mileMarker;
+	this.landmarkIndex = 0;
+	this.atLandmark = true;
+	this.finishedCrossing = true;
+	this.passedFork = true;
+	this.atFort = true;
+};
+
+// constructor for a Landmark. x and y are coordinates for display on the map canvas
+function Landmark(name, x, y, distToNextLandmark, fort = false, river = false, fork = false) {
+	this.name = name;
+	this.mileMarker = distToNextLandmark;
+	this.x = x;
+	this.y = y;
+	this.fort = fort;
+	this.river = river;
+	this.fork = fork;
+};
+
+// constructor for a Person
+function Person(name, health = 'healthy') {
+	this.name = name;
+	this.health = health;
+}
+
+// constructor for a graphic
 function component(width, height, name, x, y, myGameArea) {
 	this.width = width;
 	this.height = height;
@@ -1359,24 +1445,26 @@ function component(width, height, name, x, y, myGameArea) {
     }
 }
 
-function drawRouteToCurPos(from, to) {
-	var canvas = document.getElementById("mapCanvas");
-	var ctx = canvas.getContext("2d");
 
-	ctx.beginPath();
-	ctx.lineWidth = 3;
-	ctx.strokeStyle = "purple";
-	ctx.moveTo(landmarks[from].x, landmarks[from].y);
-	ctx.lineTo(landmarks[to].x, landmarks[to].y);
-	ctx.stroke();
-};
 
 // global types
 var illness = ['measles', 'a snakebite', 'dysentery', 'typhoid', 'cholera', 'exhaustion'];
 var randomFind = ['food', 'supplies', 'water'];
 var randomBad = ['no water', 'fire', 'theft', 'lost', 'broken', 'rough trail', 'heavy fog'];
 var monthName = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-var speech = ['hi', 'see you later', 'good luck'];
+var speech = ['Good luck!'];
+speech.push('You encounter an old settler in a small wooden house:  "Be careful about travelling too much each day.  Spending too much time on the trail can be bad for your health!  Being tired can make your travelers more weary and likely to catch disease.  A tired traveler might not be paying attention and get bitten by a snake or worse!"');
+speech.push('You encounter a young woman in a large wheat field: "Back when I traveled the trail, we got stuck in a snowstorm without enough clothes or blankets!  It was terrifying, and we lost my sister.  Be sure to bring enough clothes with you, at least one pair for each person in your wagon.  Doing anything else is downright dangerous in the cold, or even in warm weather at night!"');
+speech.push('You encounter a middle-aged fisherman at the edge of a creek: "You know that along the trail, food can be very hard to come by.  Trading is unreliable and you can\'t buy food unless you come across a fort!  Fishing can be a very good way to get extra food, you can fish anywhere you want, all you have to do is find a stream or river, which are all over the place.  I\'d estimate that a strong, able person could take back at least 200 pounds of fish in a single trip!  Oregon trail travelers are pretty strong."');
+speech.push('"You should take extra sets of clothing. Trade them to Indians for fresh vegetables, fish, or meat."');
+speech.push('"Did you read the Missouri Republican today? -- Says some folk start for Oregon without carrying spare parts, not even an extra wagon axle. Must think they grow on trees! Hope they\'re lucky enough to find an abandoned wagon."');
+speech.push('"Some folks seem to think that two oxen are enough to get them to Oregon! Two oxen can barely move a fully loaded wagon, and if one of them gets sick or dies, you won\'t be going anywhere. I wouldn\'t go overland with less than six."');
+speech.push('"The trails from the jumping off places -- Independence, St. Joseph, Council Bluffs -- come together at Fort Kearney. This new fort was built by the U.S. Army to protect those bound for California and Oregon."');
+speech.push('"The Platte River valley forms a natural roadway from Fort Kearney to Fort Laramie. Travelers bound for California, Utah, and Oregon all take this road. Could be the easiest stretch of the whole trip. Should see antelope and plenty of buffalo."');
+speech.push('"Don\'t try to ford any river deeper than the wagon bed -- about two and a half feet. You\'ll swamp your wagon and lose your supplies."');
+speech.push('"This prairie is mighty pretty with all the wild flowers and tall grasses. But there\'s too much of it! I miss not having a town nearby. I wonder how many days until I see a town -- a town with real shops, a church, people…"');
+speech.push('"Be careful you don\'t push your animals too hard! Keep them moving but set them a fair pace. You can\'t keep driving them so fast or you\'ll end up with lame-footed animals. A lame ox is about as good to you as a dead one!"');
+
 var health = ['good', 'fair', 'poor', 'very poor', 'dead'];
 var weather = ['cloudy', 'sunny', 'fair', 'rainy', 'snowy'];
 var basePrices = {oxen:40, food:0.20, clothing:10, bait:15, wheel:10, axle:10, tongue:10};
@@ -1403,16 +1491,10 @@ var landmarks = [
 	new Landmark('Oregon City, Oregon', 112, 70, 0)
 ];
 
-// returns a random integer between min and max, inclusive
-// source: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
-function getRandomInt(min, max) {
-	return min + Math.floor(Math.random() * (max - min + 1));
-}
-
+// start the game
 var loop;
 var wagon;
 var tombstones = getTombstones();
-
 var myGameArea = new gameArea("graphicsCanvas");
 var wagonIcon = new component(65, 40, "wagon", 575, 95,myGameArea);
 var landmarkIcon = new component(55,55,"landmark",15,85,myGameArea);
