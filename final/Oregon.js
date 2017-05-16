@@ -543,7 +543,15 @@ function travelOneDay(resting = false) {
 	if(wagon.landmarkIndex == landmarks.length - 1)
 		{
 			stop();
-			bootbox.alert("Congratulations, you made it to Oregon!\nScore: " + countPoints() + " points");
+
+			wagon.points = countPoints();
+			var rating = 'Greenhorn';
+			if(wagon.points >= 3000) rating = 'Adventurer';
+			else if(wagon.points >= 6000) rating = 'Trail Blazer';
+			else {}
+			insertScore(rating);
+
+			bootbox.alert("Congratulations, you made it to Oregon!\nScore: " + wagon.points + " points");
 			$("#log").text("Congratulations, you made it to Oregon!\nScore: " + wagon.points + " points");
 			$(".mainPage").hide();
 			$(".titlePage").show();
@@ -1218,9 +1226,15 @@ function updateRiverCrossing(gameArea,riverWagon)
 	if(riverWagon.count == 10000)
 	{
 		gameArea.stop();
-		insertScore();
 		
-		bootbox.alert("Congratulations you crossed the Dalles River and arrived in Oregon City! <br> Score: " + countPoints() + " points");
+		wagon.points = countPoints();
+		var rating = 'Greenhorn';
+		if(wagon.points >= 3000) rating = 'Adventurer';
+		else if(wagon.points >= 6000) rating = 'Trail Blazer';
+		else {}
+		insertScore(rating);
+
+		bootbox.alert("Congratulations you crossed the Dalles River and arrived in Oregon City! <br> Score: " + wagon.points + " points");
 		$("#log").text("Congratulations, you made it to Oregon!\nScore: " + wagon.points + " points");
 		$(".mainPage").hide();
 		$(".titlePage").show();
