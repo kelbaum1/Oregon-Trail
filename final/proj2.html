@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<link rel="stylesheet" type="text/css" href="proj2.css">
+</head>
+
+<body>
+
+<div class="storePage"> <!--General Store-->
+	<div id="store">
+		<p id="budget"> </p>
+<br><br>
+		<p id="priceOxen" class="item">Oxen: $20 each</p>
+		<p id="numOxen"></p>
+		<input type="text" id="buyOxen"><br>
+<br><br>
+		<p id="priceFood" class="item">Pounds of food: $0.20 per pound</p>
+		<p id="numFood"></p>
+		<input type="text" id="buyFood"><br>
+<br><br>
+		<p id="priceClothing" class="item">Sets of clothing: $10 each</p>
+		<p id="numClothing"></p>
+		<input type="text" id="buyClothing"><br>
+<br><br>
+		<p id="priceBait" class="item">Fishing lures: $15 each</p>
+		<p id="numBait"></p>
+		<input type="text" id="buyBait"><br>
+<br><br>
+		<p id="priceWheel" class="item">Wagon wheels: $10 each</p>
+		<p id="numWheel"></p>
+		<input type="text" id="buyWheels"><br>
+<br><br>
+		<p id="priceAxle" class="item">Wagon axles: $10 each</p>
+		<p id="numAxle"></p>
+		<input type="text" id="buyAxles"><br>
+<br><br>
+		<p id="priceTongue" class="item">Wagon tongues: $10 each</p>
+		<p id="numTongue"></p>
+		<input type="text" id="buyTongues"><br>
+		
+		<br>
+		<br>
+		
+		<!--removed the p tags from around the 2 buttons-->
+		<button type="button" id="btnStore">Continue</button> <button type="button" id="btnCancel">Cancel</button>
+	</div>
+</div>
+
+
+<div class="titlePage">
+	<!--<p>The Oregon Trail</p>-->
+
+	<p><button id="btnTitle">Start the Journey</button></p>
+
+	<p id="credits">
+	Made by: <br>
+	Michael Kelbaugh, John Larson, Christopher Blake, Mansi Shah
+	</p>
+</div>
+
+
+
+<div class="setupPage">
+<div class="setupPageInfo">
+	<p id="setupPageHint">
+		Traveling to Oregon isn't easy! But if you're a banker, you'll have more money for supplies and services than a carpenter or a farmer.
+		However, the harder you have to try, the more points you deserve! Therefore the farmer earns the greatest number of points and the banker 
+		earns the least.
+	</p>
+	
+	<br>
+	<p>
+	I want to travel as:<br>
+	<input type="radio" name="occupation" value="banker"> Banker from Boston - $1600<br>
+	<input type="radio" name="occupation" value="carpenter"> Carpenter from Ohio - $800 (double points)<br>
+	<input type="radio" name="occupation" value="farmer"> Farmer from Illinois - $400 (triple points)<br>
+	</p>
+
+	Wagon Leader's Name:<br>
+	<input type="text" id="leaderName"><br><br>
+	
+	The members of the wagon party:<br><br>
+	
+	Person 1:<br>
+	<input type="text" id="person1" value="Michael"><br><br>
+	
+	Person 2:<br>
+	<input type="text" id="person2" value="John"><br><br>
+	
+	Person 3:<br>
+	<input type="text" id="person3" value="Chris"><br><br>
+	
+	Person 4:<br>
+	<input type="text" id="person4" value="Mansi">
+
+	<br>
+	<br>
+	
+	<p>
+	Choose a starting month:
+	If you leave too early in the year, there won't be any grass for your oxen to eat.
+	If you leave too late, you may not get to Oregon before winter comes.
+	If you leave at just the right time, there will be green grass and the weather will still be cool.
+	</p>
+	<select name="month" id="month">
+	<!--<option value="noMonth">Select Month...</option>-->
+	<option value="2">March</option>
+	<option value="3">April</option>
+	<option value="4">May</option>
+	<option value="5">June</option>
+	<option value="6">July</option>
+	</select>
+	
+	<br>
+	<br>
+	
+	<p><button type="button" id="btnSetup">Continue</button></p>
+</div> <!--setupPageInfo-->
+</div> <!--setupPage end, page 2-->
+
+
+<div class="mainPage">
+
+<div id="left1">
+	<button id="btnBuy">Buy</button>
+	<button id="btnTalk">Talk</button>
+	<button id="btnTrade">Trade</button>
+	<button id="btnTopScores">Top Scores</button>
+	<!--<button id="btnTombstones">Tombstones</button>-->
+	<!--<button id="btnInsertTombstone">Insert Tombstone</button>-->
+	<!--<button id="btnInsertScore">Insert Score</button>-->
+</div>
+
+<div id="left2">
+
+	<div id="graphics">
+		<canvas id="graphicsCanvas"	style="border:1px solid #000000;" width="665" height="155">
+		</canvas>
+	</div>
+			
+	<div id="map">
+		
+		<canvas id="mapCanvas" width="665" height="215"
+				style="border:1px solid #000000;">
+	</div>
+	
+	<table id="logTable">
+		<tr>
+			<td id="logLabel" class="labels"></td>
+			<td id="log" class="values2"></td>
+			<td class="labels">&nbsp;</td>
+			<td class="values">&nbsp;</td>
+		</tr>
+		<tr>
+			<td id="nextLandmarkLabel" class="labels">&nbsp;</td>
+			<td id="nextLandmark" class="values2">&nbsp;</td>
+			<td class="labels">&nbsp;</td>
+			<td class="values">&nbsp;</td>
+		</tr>
+	</table>
+	<br>
+	<table id="statusTable">
+		<tr>
+			<th class="header" colspan="2">Supplies</th>
+			<th class="header" colspan="2">Party</th>
+		</tr>
+		<tr>
+			<td class="labels">Oxen:</td>
+			<td id="oxen" class="values2">&nbsp;</td>
+			<td id="p1Label" class="labels">&nbsp;</td>
+			<td id="p1" class="values2">&nbsp;</td>
+		</tr>
+		<tr>
+			<td class="labels">Wheels:</td>
+			<td id="wheels" class="values2">&nbsp;</td>
+			<td id="p2Label" class="labels">&nbsp;</td>
+			<td id="p2" class="values2">&nbsp;</td>
+		</tr>
+		<tr>
+			<td class="labels">Axles:</td>
+			<td id="axles" class="values2">&nbsp;</td>
+			<td id="p3Label" class="labels">&nbsp;</td>
+			<td id="p3" class="values2">&nbsp;</td>
+		</tr>
+		<tr>
+			<td class="labels">Tongues:</td>
+			<td id="tongues" class="values2">&nbsp;</td>
+			<td id="p4Label" class="labels">&nbsp;</td>
+			<td id="p4" class="values2">&nbsp;</td>
+		</tr>
+		<tr>
+			<td class="labels">Clothes:</td>
+			<td id="clothing" class="values2">&nbsp;</td>
+			<td id="p5Label" class="labels">&nbsp;</td>
+			<td id="p5" class="values2">&nbsp;</td>
+		</tr>
+		<tr>
+			<td class="labels">Fishing Bait:</td>
+			<td id="bait" class="values2">&nbsp;</td>
+			<td class="labels">&nbsp;</td>
+			<td class="values2">&nbsp;</td>
+		</tr>
+	</table>
+	
+</div>
+
+<div id="left3">
+	<div id="left3top">
+		<p id="conditions">Conditions</p>
+		<table id="condTable">
+			<tr>
+				<td class="labels" id="dateLabel">Date:</td>
+				<td id="currentDate" class="values"></td>
+			</tr>
+			<tr>
+				<td class="labels">Weather:</td>
+				<td id="weather" class="values"></td>
+			</tr>
+		</table>
+		<p id="distance">Distance</p>
+		<table id="distTable">
+			<tr>
+				<td class="labels">To Landmark:</td>
+				<td id="distanceToLandmark" class="values"></td>
+			</tr>
+			<tr>
+				<td class="labels">Traveled:</td>
+				<td id="distanceTraveled" class="values"></td>
+			</tr>
+		</table>
+		<p id="wagon">Wagon</p>
+		<table id="wagonTable">
+			<tr>
+				<td class="labels">Pace:</td>
+				<td id="pace" class="values"></td>
+			</tr>
+			<tr>
+				<td class="labels">Rations:</td>
+				<td id="rations" class="values"></td>
+			</tr>
+			<tr>
+				<td class="labels">Health:</td>
+				<td id="health" class="values"></td>
+			</tr>
+			<tr>
+				<td class="labels">Food Left:</td>
+				<td id="food" class="values"></td>
+			</tr>
+			<tr>
+				<td class="labels">&nbsp;</td>
+				<td class="values">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="labels">&nbsp;</td>
+				<td class="values">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="labels">Wagon:</td>
+				<td id="wagonStatus" class="values"></td>
+			</tr>
+		</table>
+	</div>
+	
+	<div id="left3bottom">
+		<button id="btnPause">Pause</button>
+		<button id="btnContinue">Continue</button>
+	</div>
+</div> 
+
+<div id="left4">
+	<button id="btnPace">Change Pace</button>
+	<button id="btnRest">Rest</button>
+	<button id="btnRations">Change Rations</button>
+	<button id="btnFish">Fish</button>
+</div>
+
+
+</div> <!--mainpage div end-->
+
+<div class="endGame">
+	<canvas id="endCanvas"	style="border:1px solid #000000;" width="850" height="500">
+	</canvas>
+	</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js" type="text/javascript"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="proj2.js"></script>
+
+</body>
+</html>
