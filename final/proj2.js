@@ -533,7 +533,7 @@ function getTombstones() {
 // if you die, insert a tombstone into the database
 function insertTombstone() {
 	bootbox.prompt({
-		title: "Sadly, your entire party died on the trip to Oregon.<br>Write a message for your tombstone:",
+		title: "Sadly, your entire party died on the trip to Oregon.<br>Write a moving epitaph for your tombstone:",
 		inputType: 'textarea',
 		value: "Requiescat In Pace",
 		callback: function (result) {
@@ -611,7 +611,7 @@ function travelOneDay(resting = false) {
 			wagon.points = countPoints();
 			var rating = 'Greenhorn';
 			if(wagon.points >= 3000) rating = 'Adventurer';
-			else if(wagon.points >= 6000) rating = 'Trail Blazer';
+			else if(wagon.points >= 6000) rating = 'Trail Guide';
 			else {}
 			insertScore(rating);
 
@@ -1127,7 +1127,7 @@ function updateRiverCrossing(gameArea,riverWagon) {
 		wagon.points = countPoints();
 		var rating = 'Greenhorn';
 		if(wagon.points >= 3000) rating = 'Adventurer';
-		else if(wagon.points >= 6000) rating = 'Trail Blazer';
+		else if(wagon.points >= 6000) rating = 'Trail Guide';
 		else {}
 		insertScore(rating);
 

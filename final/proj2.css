@@ -46,6 +46,22 @@ button
 	font-size: 2em;
 }
 
+#gameName
+{
+	font-family: Copperplate Gothic Light;
+	color: black;
+	font-weight: bold;
+	text-transform: uppercase;
+	margin-bottom: 1%;
+	margin-left: 10%;
+	font-size: 2.6em;
+}
+
+#gameStart
+{
+	margin-top: 10%;
+}
+
 .setupPage
 {
 	background-image: url('pics/page2.jpg');
